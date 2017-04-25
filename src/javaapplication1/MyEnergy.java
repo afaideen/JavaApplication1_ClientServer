@@ -15,7 +15,8 @@ import org.json.JSONObject;
 class MyEnergy {
     private String timeString, sensorid, _id;
     private long datetime;
-    private double energy, energyTotal, costTotal;
+    private double energy, energyTotal, CO2, costTotal, costLastWeek, costAverageDaily;
+    private double costLast24H;
 
     public MyEnergy(String id, String sensorId, double energyActive, double totalEnergyActive, double totalCost, long datetime, String timeString) {
         this._id = id;
@@ -28,6 +29,15 @@ class MyEnergy {
     }
 
     public MyEnergy() {
+    }
+
+    MyEnergy(String id, String sensorId, double energyActive, double totalEnergyActive, double totalCost, long datetime) {
+        this._id = id;
+        this.sensorid = sensorId;
+        this.energy = energyActive;
+        this.energyTotal = totalEnergyActive;      
+        this.costTotal = totalCost;
+        this.datetime = datetime;
     }
 
     public String get_id() {
@@ -62,6 +72,14 @@ class MyEnergy {
         return energyTotal;
     }
 
+    public double getCO2() {
+        return CO2;
+    }
+
+    public void setCO2(double CO2) {
+        this.CO2 = CO2;
+    }
+
     public void setEnergyTotal(double energyTotal) {
         this.energyTotal = energyTotal;
     }
@@ -74,6 +92,33 @@ class MyEnergy {
         this.costTotal = costTotal;
     }
 
+    public double getCostLastWeek() {
+        return costLastWeek;
+    }
+
+    public void setCostLastWeek(double costLastWeek) {
+        this.costLastWeek = costLastWeek;
+    }
+
+    public double getCostAverageDaily() {
+        return costAverageDaily;
+    }
+
+    public void setCostAverageDaily(double costAverageDaily) {
+        this.costAverageDaily = costAverageDaily;
+    }
+
+    public double getCostLast24H() {
+        return costLast24H;
+    }
+
+    public void setCostLast24H(double costLast24H) {
+        this.costLast24H = costLast24H;
+    }
+
+    
+    
+    
     public String getSensorid() {
         return sensorid;
     }
@@ -86,17 +131,18 @@ class MyEnergy {
 
         JSONObject jsonObject= new JSONObject();
 //        JSONObject payload= new JSONObject();
-        JSONObject jsonObject2= new JSONObject();
+//        JSONObject jsonObject2= new JSONObject();
         try {
             jsonObject.put("dateTime", getDatetime());
             jsonObject.put("sensorId", getSensorid());
-            jsonObject.put("carbonDioxide", 123);
-            jsonObject.put("costToday", 1234);
-            jsonObject.put("costAverageDaily", 1234);
-            jsonObject.put("costAverageWeek", 1234);
-            jsonObject.put("costLastWeek", 1234);
+            jsonObject.put("carbonDioxide", getCO2());
+            jsonObject.put("costToday", getCostTotal());
+            jsonObject.put("costAverageDaily", getCostAverageDaily());
+            jsonObject.put("costLast24H", getCostLast24H());
+            jsonObject.put("costAverageWeek", getCostLastWeek());
+            jsonObject.put("costLastWeek", getCostLastWeek());
             jsonObject.put("rank", 1234);
-//            payload.putOpt("payload", jsonObject);
+
 //            jsonObject2.put("_id", get_id());
 //            jsonObject2.put("payload", jsonObject);
 
@@ -110,5 +156,7 @@ class MyEnergy {
 
 
     }
+
+   
     
 }

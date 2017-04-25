@@ -72,6 +72,8 @@ public class JavaApplication1 {
 //                MyData data = new MyData(); 
 //                data = Extract(jsonData);
                 List<MyData> listData = Extract2(jsonArrayData);  
+                if(listData.size()==0)
+                    continue;
                 List<MyEnergy> listEnergy = new ArrayList<>();
                 conn.disconnect();
                 for(MyData data:listData){
@@ -170,54 +172,60 @@ public class JavaApplication1 {
     
     private static List<MyData> Extract2(String jsonData) throws JSONException {
         List<MyData> listMyData = new ArrayList<>();
-        
-        JSONArray objArray = new JSONArray(jsonData);
-        for(int i = 0; i < objArray.length(); i++){
-            System.out.println(i + "");
-            if(i==35)
-                i = 35;
-            JSONObject obj = (JSONObject) objArray.get(i);//new JSONObject(jsonData); 
-            MyData data = new MyData();
-            data.setId(obj.getString("_id"));
-            data.setCounter(Integer.parseInt(obj.getString("counter")));
-            data.setDateTime(Long.parseLong(obj.getString("dateTime")));
-//            data.setT(obj.getLong("t"));
-            data.setSensorId(obj.getString("sensorId"));
-            data.setType(Integer.parseInt(obj.getString("type")));
+        try{
+            JSONArray objArray = new JSONArray(jsonData);
+            for(int i = 0; i < objArray.length(); i++){
+                System.out.println(i + "");
+                if(i==35)
+                    i = 35;
+                JSONObject obj = (JSONObject) objArray.get(i);//new JSONObject(jsonData); 
+                MyData data = new MyData();
+                data.setId(obj.getString("_id"));
+                data.setCounter(Integer.parseInt(obj.getString("counter")));
+                data.setDateTime(Long.parseLong(obj.getString("dateTime")));
+    //            data.setT(obj.getLong("t"));
+                data.setSensorId(obj.getString("sensorId"));
+                data.setType(Integer.parseInt(obj.getString("type")));
 
-            JSONObject childrenPhase1 = new JSONObject();
-            childrenPhase1 = obj.getJSONObject("phase1");
-            PowerPhase phase1 = new PowerPhase();
-            phase1.setActivepower(childrenPhase1.getString("activepower"));
-            phase1.setApparentpower(childrenPhase1.getString("apparentpower"));
-            phase1.setCurrent(childrenPhase1.getString("current"));
-            phase1.setVoltage(childrenPhase1.getString("voltage"));
-            phase1.setPowerfactor(childrenPhase1.getString("powerfactor"));
-            phase1.setDeviceId(childrenPhase1.getString("deviceId"));
-            data.setPhase1(phase1);
+                JSONObject childrenPhase1 = new JSONObject();
+                childrenPhase1 = obj.getJSONObject("phase1");
+                PowerPhase phase1 = new PowerPhase();
+                phase1.setActivepower(childrenPhase1.getString("activepower"));
+                phase1.setApparentpower(childrenPhase1.getString("apparentpower"));
+                phase1.setCurrent(childrenPhase1.getString("current"));
+                phase1.setVoltage(childrenPhase1.getString("voltage"));
+                phase1.setPowerfactor(childrenPhase1.getString("powerfactor"));
+                phase1.setDeviceId(childrenPhase1.getString("deviceId"));
+                data.setPhase1(phase1);
 
-            JSONObject childrenPhase2 = new JSONObject();
-            childrenPhase2 = obj.getJSONObject("phase2");
-            PowerPhase phase2 = new PowerPhase();
-            phase2.setActivepower(childrenPhase2.getString("activepower"));
-            phase2.setApparentpower(childrenPhase2.getString("apparentpower"));
-            phase2.setCurrent(childrenPhase2.getString("current"));
-            phase2.setVoltage(childrenPhase2.getString("voltage"));
-            phase2.setPowerfactor(childrenPhase2.getString("powerfactor"));
-            phase2.setDeviceId(childrenPhase2.getString("deviceId"));
-            data.setPhase2(phase2);
 
-            JSONObject childrenPhase3 = new JSONObject();
-            childrenPhase3 = obj.getJSONObject("phase3");
-            PowerPhase phase3 = new PowerPhase();
-            phase3.setActivepower(childrenPhase3.getString("activepower"));
-            phase3.setApparentpower(childrenPhase3.getString("apparentpower"));
-            phase3.setCurrent(childrenPhase3.getString("current"));
-            phase3.setVoltage(childrenPhase3.getString("voltage"));
-            phase3.setPowerfactor(childrenPhase3.getString("powerfactor"));
-            phase3.setDeviceId(childrenPhase3.getString("deviceId"));
-            data.setPhase3(phase3);
-            listMyData.add(data);
+                JSONObject childrenPhase2 = new JSONObject();            
+                childrenPhase2 = obj.getJSONObject("phase2");
+                PowerPhase phase2 = new PowerPhase();
+                phase2.setActivepower(childrenPhase2.getString("activepower"));
+                phase2.setApparentpower(childrenPhase2.getString("apparentpower"));
+                phase2.setCurrent(childrenPhase2.getString("current"));
+                phase2.setVoltage(childrenPhase2.getString("voltage"));
+                phase2.setPowerfactor(childrenPhase2.getString("powerfactor"));
+                phase2.setDeviceId(childrenPhase2.getString("deviceId"));
+                data.setPhase2(phase2);
+
+
+                JSONObject childrenPhase3 = new JSONObject();
+                childrenPhase3 = obj.getJSONObject("phase3");
+                PowerPhase phase3 = new PowerPhase();
+                phase3.setActivepower(childrenPhase3.getString("activepower"));
+                phase3.setApparentpower(childrenPhase3.getString("apparentpower"));
+                phase3.setCurrent(childrenPhase3.getString("current"));
+                phase3.setVoltage(childrenPhase3.getString("voltage"));
+                phase3.setPowerfactor(childrenPhase3.getString("powerfactor"));
+                phase3.setDeviceId(childrenPhase3.getString("deviceId"));
+                data.setPhase3(phase3);
+                listMyData.add(data);
+
+            }
+        }catch (JSONException e){
+            
         }
          
         
