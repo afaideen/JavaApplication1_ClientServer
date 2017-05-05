@@ -141,7 +141,7 @@ public class JavaApplication1 {
                         energy.setCostTotal(totalCost);
 
                         energy.setCostToday(totalCostWeek[0]);
-                        double totHours = listEnergy.size()*10/60/60;
+                        double totHours = (listEnergy.size()*10/60)/60;
                         energy.setCostAverageDaily(energy.getCostToday()/totHours);
                         
                         totalCO2 = (currentTotalEnergyActive1+currentTotalEnergyActive2+currentTotalEnergyActive3) * 0.67552;
