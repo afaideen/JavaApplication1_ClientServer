@@ -75,19 +75,13 @@ public class JavaApplication1 {
                 List<MyEnergy> listEnergy = new ArrayList<>();
                 conn.disconnect();
                 for(MyData data:listData){
-                    double energyActive = Double.parseDouble(data.getPhase1().getActivepower()) * 10/3600;
+                    double energyActive = Math.abs(Double.parseDouble(data.getPhase1().getActivepower()) * 10/3600/1000);
                     totalEnergyActive = totalEnergyActive + energyActive;
                     totalCost = totalEnergyActive * 0.10;
                     long datetime = data.getDateTime();
 //                    String timeString = new SimpleDateFormat("HH:mm:ss").format(new Date(datetime*1000));
-                    MyEnergy energy = new MyEnergy(data.getId(), data.getSensorId(), energyActive, totalEnergyActive, totalCost, datetime);//, timeString);                    
-//                    int index = listData.indexOf(data);
-//                    if(index == 8640 - 1){
-//                        energy.setCostLast24H(totalCost);
-//                    }
-//                    
-//                    energy.setCostAverageDaily(totalEnergyActive);
-//                    energy.setCostLastWeek(totalCost);
+                    MyEnergy energy = new MyEnergy(data.getId(), data.getSensorId(), energyActive, totalEnergyActive, totalCost, datetime);                 
+
                     listEnergy.add(energy);
                 }
 
@@ -195,6 +189,10 @@ public class JavaApplication1 {
             phase1.setPowerfactor(childrenPhase1.getString("powerfactor"));
             phase1.setDeviceId(childrenPhase1.getString("deviceId"));
             data.setPhase1(phase1);
+            if(data.getType() == 1){
+                listMyData.add(data);
+                continue;
+            }
 
             JSONObject childrenPhase2 = new JSONObject();
             childrenPhase2 = obj.getJSONObject("phase2");

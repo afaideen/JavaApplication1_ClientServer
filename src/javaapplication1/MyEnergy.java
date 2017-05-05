@@ -15,15 +15,15 @@ import org.json.JSONObject;
 class MyEnergy {
     private String timeString, sensorid, _id;
     private long datetime;
-    private double energy, energyTotal, costTotal;
+    private double energy, energyTotal, costTotal, totalCostLastWeek;
 
-    public MyEnergy(String id, String sensorId, double energyActive, double totalEnergyActive, double totalCost, long datetime, String timeString) {
+    public MyEnergy(String id, String sensorId, double energyActive, double totalEnergyActive, double totalCost, long datetime) {
         this._id = id;
         this.sensorid = sensorId;
         this.energy = energyActive;
         this.energyTotal = totalEnergyActive;
         this.datetime = datetime;
-        this.timeString = timeString;
+//        this.timeString = timeString;
         this.costTotal = totalCost;
     }
 
@@ -81,6 +81,15 @@ class MyEnergy {
     public void setSensorid(String sensorid) {
         this.sensorid = sensorid;
     }
+    
+    void setCostLastWeek(double totalCost) {
+        this.totalCostLastWeek = totalCost;
+    }
+
+    public double getTotalCostLastWeek() {
+        return totalCostLastWeek;
+    }
+    
 
     public String toJSON(){
 
@@ -110,5 +119,7 @@ class MyEnergy {
 
 
     }
+
+    
     
 }
