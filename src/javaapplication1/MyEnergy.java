@@ -12,22 +12,40 @@ import org.json.JSONObject;
  *
  * @author han
  */
-class MyEnergy {
+class MyEnergy implements Cloneable {
     private String timeString, sensorid, _id;
     private long datetime;
-    private double energy, energyTotal, costTotal, totalCostLastWeek;
+    private double energy1, energy1Total, energy2, energy2Total, energy3, energy3Total, CO2, todayCO2, costTotal, costLastWeek, costAveWeek, costAverageDaily;
+    private double costLast24H, costToday;
 
-    public MyEnergy(String id, String sensorId, double energyActive, double totalEnergyActive, double totalCost, long datetime) {
+    public MyEnergy(String id, String sensorId, double energyActive, double totalEnergyActive, double totalCost, long datetime, String timeString) {
         this._id = id;
         this.sensorid = sensorId;
-        this.energy = energyActive;
-        this.energyTotal = totalEnergyActive;
+        this.energy1 = energyActive;
+        this.energy1Total = totalEnergyActive;
         this.datetime = datetime;
-//        this.timeString = timeString;
+        this.timeString = timeString;
         this.costTotal = totalCost;
     }
 
     public MyEnergy() {
+    }
+
+    MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
+                double energyActive3, double totalEnergyActive3, double totalCost, long datetime) {
+        this._id = id;
+        this.sensorid = sensorId;
+        this.energy1 = energyActive1;
+        this.energy1Total = totalEnergyActive1;    
+        this.energy2 = energyActive2;
+        this.energy2Total = totalEnergyActive2; 
+        this.energy3 = energyActive3;
+        this.energy3Total = totalEnergyActive3; 
+        this.costTotal = totalCost;
+        this.datetime = datetime;
+    }
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public String get_id() {
@@ -50,21 +68,70 @@ class MyEnergy {
         this.datetime = datetime;
     }
 
-    public double getEnergy() {
-        return energy;
+    public double getEnergy1() {
+        return energy1;
     }
 
-    public void setEnergy(double energy) {
-        this.energy = energy;
+    public void setEnergy1(double energy1) {
+        this.energy1 = energy1;
     }
 
-    public double getEnergyTotal() {
-        return energyTotal;
+    public double getEnergy1Total() {
+        return energy1Total;
+    }
+    public void setEnergy1Total(double energy1Total) {
+        this.energy1Total = energy1Total;
     }
 
-    public void setEnergyTotal(double energyTotal) {
-        this.energyTotal = energyTotal;
+    public double getEnergy2() {
+        return energy2;
     }
+
+    public void setEnergy2(double energy2) {
+        this.energy2 = energy2;
+    }
+
+    public double getEnergy2Total() {
+        return energy2Total;
+    }
+
+    public void setEnergy2Total(double energy2Total) {
+        this.energy2Total = energy2Total;
+    }
+
+    public double getEnergy3() {
+        return energy3;
+    }
+
+    public void setEnergy3(double energy3) {
+        this.energy3 = energy3;
+    }
+
+    public double getEnergy3Total() {
+        return energy3Total;
+    }
+
+    public void setEnergy3Total(double energy3Total) {
+        this.energy3Total = energy3Total;
+    }
+    
+
+    public double getTodayCO2() {
+        return todayCO2;
+    }
+
+    public void setTodayCO2(double CO2) {
+        this.todayCO2 = CO2;
+    }
+
+    public double getCO2() {
+        return CO2;
+    }
+
+    public void setCO2(double CO2) {
+        this.CO2 = CO2;
+    }
+    
 
     public double getCostTotal() {
         return costTotal;
@@ -74,6 +141,42 @@ class MyEnergy {
         this.costTotal = costTotal;
     }
 
+    public double getCostLastWeek() {
+        return costLastWeek;
+    }
+
+    public void setCostLastWeek(double costLastWeek) {
+        this.costLastWeek = costLastWeek;
+    }
+
+    public double getCostAveWeek() {
+        return costAveWeek;
+    }
+
+    public void setCostAveWeek(double costAveWeek) {
+        this.costAveWeek = costAveWeek;
+    }
+    
+
+    public double getCostAverageDaily() {
+        return costAverageDaily;
+    }
+
+    public void setCostAverageDaily(double costAverageDaily) {
+        this.costAverageDaily = costAverageDaily;
+    }
+
+    public double getCostLast24H() {
+        return costLast24H;
+    }
+
+    public void setCostLast24H(double costLast24H) {
+        this.costLast24H = costLast24H;
+    }
+
+    
+    
+    
     public String getSensorid() {
         return sensorid;
     }
@@ -81,31 +184,24 @@ class MyEnergy {
     public void setSensorid(String sensorid) {
         this.sensorid = sensorid;
     }
-    
-    void setCostLastWeek(double totalCost) {
-        this.totalCostLastWeek = totalCost;
-    }
-
-    public double getTotalCostLastWeek() {
-        return totalCostLastWeek;
-    }
-    
 
     public String toJSON(){
 
         JSONObject jsonObject= new JSONObject();
 //        JSONObject payload= new JSONObject();
-        JSONObject jsonObject2= new JSONObject();
+//        JSONObject jsonObject2= new JSONObject();
         try {
             jsonObject.put("dateTime", getDatetime());
             jsonObject.put("sensorId", getSensorid());
-            jsonObject.put("carbonDioxide", 123);
-            jsonObject.put("costToday", 1234);
-            jsonObject.put("costAverageDaily", 1234);
-            jsonObject.put("costAverageWeek", 1234);
-            jsonObject.put("costLastWeek", 1234);
-            jsonObject.put("rank", 1234);
-//            payload.putOpt("payload", jsonObject);
+//            jsonObject.put("todayCarbonDioxide", getTodayCO2());
+            jsonObject.put("carbonDioxide", getCO2());  //total CO2
+            jsonObject.put("costToday", getCostToday());
+            jsonObject.put("costAverageDaily", getCostAverageDaily());
+//            jsonObject.put("costLast24H", getCostLast24H());
+            jsonObject.put("costAverageWeek", getCostAveWeek());
+            jsonObject.put("costLastWeek", getCostLastWeek());
+            jsonObject.put("rank", "N/A");
+
 //            jsonObject2.put("_id", get_id());
 //            jsonObject2.put("payload", jsonObject);
 
@@ -120,6 +216,15 @@ class MyEnergy {
 
     }
 
+    void setCostToday(double totalCost) {
+        this.costToday = totalCost;
+    }
+
+    public double getCostToday() {
+        return costToday;
+    }
     
+
+   
     
 }

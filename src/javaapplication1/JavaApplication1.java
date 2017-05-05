@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javaapplication1.Helper.TarifCalculation;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,76 +41,161 @@ public class JavaApplication1 {
      */
     private static String output;
     static String jsonData, jsonArrayData;
-    static double totalEnergyActive = 0;
+    static double totalEnergyActive1 = 0, totalEnergyActive2 = 0, totalEnergyActive3 = 0;
     static double totalCost = 0;
+    static double[] totalCostWeek = new double[52];
     static int indexarray = 0;
     public static String[] sensorList;
     public static String urlAddress;
-    static int indexCounter = 0;
+    static int indexCounter = 0, indexHopCounter = 0;
+    private static MyEnergy todayEnergy, weekEnergy, energy;
+    private static double currentTotalEnergyActive1 = 0,currentTotalEnergyActive2 = 0,currentTotalEnergyActive3 = 0;
+    private static int type;
+    private static double costLastWeek;
+    private static double costAverageWeek;
+    private static double totalCO2;
+    private static double costToday;
+    private static double costAverageDaily;
     
     
-    public static void main(String[] args) {  
+    public static void main(String[] args) throws CloneNotSupportedException {  
         sensorList = getSensorList();
         int size = sensorList.length;
         while(indexCounter < sensorList.length){
-            
+           
             try {
 //                URL url = new URL("http://10.44.28.105/sensor_kafkaid?id=TM1101C263&points=8640");  //24hr 
 //                URL url = new URL("http://10.44.28.105/sensor_kafkaid?id=TM1101C263&points=60480");     //7 days, a week
-                urlAddress = "http://10.44.28.105/sensor_kafkaid?id=" + sensorList[indexCounter++] + "&points=60480";
-                URL url = new URL(urlAddress);
-                
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
-                if (conn.getResponseCode() != 200) {
-                            throw new RuntimeException("Failed : HTTP error code : "
-                                            + conn.getResponseCode());
+//                urlAddress = "http://10.44.28.105/sensor_kafkaid?id=" + sensorList[indexCounter++] + "&points=60480";
+                indexHopCounter = 0;
+                currentTotalEnergyActive1 = 0;
+                currentTotalEnergyActive2 = 0;
+                currentTotalEnergyActive3 = 0;
+                energy = new MyEnergy();
+                while(indexHopCounter != -1){
+                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
+                    System.out.println(urlAddress);
+                    URL url = new URL(urlAddress);
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("Accept", "application/json");
+                    if (conn.getResponseCode() != 200) {
+                                throw new RuntimeException("Failed : HTTP error code : "
+                                                + conn.getResponseCode());
+                        }
+
+                    jsonArrayData = ReadData(conn);
+                    if(jsonArrayData.equals("[]")){
+                        indexHopCounter = -1;
+                        break;
                     }
-//                jsonData = ReadData(conn);
-                jsonArrayData = ReadData(conn);
 
-//                MyData data = new MyData(); 
-//                data = Extract(jsonData);
-                List<MyData> listData = Extract2(jsonArrayData);  
-                List<MyEnergy> listEnergy = new ArrayList<>();
-                conn.disconnect();
-                for(MyData data:listData){
-                    double energyActive = Math.abs(Double.parseDouble(data.getPhase1().getActivepower()) * 10/3600/1000);
-                    totalEnergyActive = totalEnergyActive + energyActive;
-                    totalCost = totalEnergyActive * 0.10;
-                    long datetime = data.getDateTime();
-//                    String timeString = new SimpleDateFormat("HH:mm:ss").format(new Date(datetime*1000));
-                    MyEnergy energy = new MyEnergy(data.getId(), data.getSensorId(), energyActive, totalEnergyActive, totalCost, datetime);                 
+                    List<MyData> listData = Extract2(jsonArrayData);
+                    System.out.println("list data size = " + listData.size());
+                    if(listData.size()==0){
+                        indexHopCounter++;
+                        continue;
+                    }
+                    List<MyEnergy> listEnergy = new ArrayList<>();
+                    conn.disconnect();
+                    double energyActive1 = 0, energyActive2 = 0, energyActive3 = 0;
+                    totalEnergyActive1 = 0;
+                    totalEnergyActive2 = 0;
+                    totalEnergyActive3 = 0;
+                    for(MyData data:listData){
+                        type = data.getType();
+                        if(data.getType() == 1){
+                            energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
+                            totalEnergyActive1 = totalEnergyActive1 + energyActive1;
+                        }
+                        else{
+                            energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
+                            totalEnergyActive1 = totalEnergyActive1 + energyActive1;
+                            
+                            energyActive2 = Math.abs(Double.parseDouble(data.getPhase2().getActivepower())) * 10/3600/1000;
+                            totalEnergyActive2 = totalEnergyActive2 + energyActive2;
 
-                    listEnergy.add(energy);
+                            energyActive3 = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10/3600/1000;
+                            totalEnergyActive3 = totalEnergyActive3 + energyActive3;
+
+                        }
+    //                    totalCost = totalEnergyActive * 0.10;
+                        long datetime = data.getDateTime()*1000;
+    //                    String timeString = new SimpleDateFormat("HH:mm:ss").format(new Date(datetime*1000));
+                        MyEnergy tempenergy = new MyEnergy(data.getId(), data.getSensorId(), energyActive1, totalEnergyActive1,
+                                                energyActive2, totalEnergyActive2, energyActive3, totalEnergyActive3, totalCost, datetime);//, timeString);                    
+
+                        listEnergy.add(tempenergy);
+                    }
+
+                    int lastindex = listEnergy.size() - 1;
+                    
+                    if(indexHopCounter == 0){
+                        energy  = listEnergy.get(lastindex);
+                        currentTotalEnergyActive1 = currentTotalEnergyActive1 + energy.getEnergy1Total();
+                        currentTotalEnergyActive2 = currentTotalEnergyActive2 + energy.getEnergy2Total();
+                        currentTotalEnergyActive3 = currentTotalEnergyActive3 + energy.getEnergy3Total();
+                        totalCostWeek[0] = TarifCalculation(energy);  
+                        totalCost += totalCostWeek[0];
+                        energy.setCostTotal(totalCost);
+
+                        energy.setCostToday(totalCostWeek[0]);
+                        double totHours = listEnergy.size()*10/60/60;
+                        energy.setCostAverageDaily(energy.getCostToday()/totHours);
+                        
+                        totalCO2 = (currentTotalEnergyActive1+currentTotalEnergyActive2+currentTotalEnergyActive3) * 0.67552;
+                        energy.setTodayCO2(totalCO2);
+                        todayEnergy = (MyEnergy) energy.clone();
+                        costToday = energy.getCostToday();
+                        costAverageDaily = energy.getCostAverageDaily();
+                    }
+                    else if(indexHopCounter == 1){ //week 1
+                        energy = listEnergy.get(lastindex);  
+                        currentTotalEnergyActive1 = currentTotalEnergyActive1 + energy.getEnergy1Total();
+                        currentTotalEnergyActive2 = currentTotalEnergyActive2 + energy.getEnergy2Total();
+                        currentTotalEnergyActive3 = currentTotalEnergyActive3 + energy.getEnergy3Total();
+                        totalCostWeek[1] = TarifCalculation(energy);  
+                        totalCost += totalCostWeek[1];
+                        energy.setCostTotal(totalCost);
+                        
+                        
+                        energy.setCostLastWeek(totalCostWeek[1]);
+                        double totHours = 24 * 7; //24hours x 7 days
+                        energy.setCostAveWeek(energy.getCostLastWeek()/totHours);
+                        costLastWeek = energy.getCostLastWeek();
+                        costAverageWeek = energy.getCostAveWeek();                        
+                        
+                        totalCO2 = (currentTotalEnergyActive1+currentTotalEnergyActive2+currentTotalEnergyActive3) * 0.67552;
+                        energy.setCO2(totalCO2);
+                        
+                    }
+                    else{
+                        energy = listEnergy.get(lastindex);  
+                        currentTotalEnergyActive1 = currentTotalEnergyActive1 + energy.getEnergy1Total();
+                        currentTotalEnergyActive2 = currentTotalEnergyActive2 + energy.getEnergy2Total();
+                        currentTotalEnergyActive3 = currentTotalEnergyActive3 + energy.getEnergy3Total();
+                        totalCostWeek[indexHopCounter] = TarifCalculation(energy); 
+                        totalCost += totalCostWeek[indexHopCounter];
+                        energy.setCostTotal(totalCost);                        
+                       
+                        totalCO2 = (currentTotalEnergyActive1+currentTotalEnergyActive2+currentTotalEnergyActive3) * 0.67552;
+                        energy.setCO2(totalCO2);
+                       
+                    }
+                
+                    indexHopCounter++;
                 }
-
-//                double energyActive = Double.parseDouble(data.getPhase1().getActivepower()) * 5/3600;
-//                totalEnergyActive = totalEnergyActive + energyActive;
-//                totalCost = totalEnergyActive * 0.10;
-//                long datetime = data.getDateTime();
-////                long datetime = Calendar.getInstance().getTime().getTime();
-//                String timeString = new SimpleDateFormat("HH:mm:ss").format(new Date(datetime*1000));
-//                MyEnergy energy = new MyEnergy(data.getId(), data.getSensorId(), energyActive, totalEnergyActive, totalCost, datetime, timeString);
                 
-                int lastindex = listEnergy.size() - 1;
-                MyEnergy lastEnergy  = listEnergy.get(lastindex);
-                totalCost = lastEnergy.getCostTotal();
-                lastEnergy.setCostLastWeek(totalCost);
-                lastEnergy.setCostAverageDaily(totalCost/7);
-                double totalCO2 = 0;
-                totalCO2 = lastEnergy.getEnergyTotal() * 0.67552;
-                lastEnergy.setCO2(totalCO2);
-                
-                //total cost until 6th day
-//                MyEnergy lastEnergy6day  = listEnergy.get(51840-1);
-//                totalCost = totalCost - lastEnergy6day.getCostTotal();                
-//                lastEnergy.setCostLast24H(totalCost);
                 
                 String msg = ""; 
-                msg = lastEnergy.toJSON().toString();
-                msg = "[" + msg + "]";
+                energy.setCostLastWeek(costLastWeek);
+                energy.setCostAveWeek(costAverageWeek);
+                energy.setCostToday(costToday);
+                energy.setCostAverageDaily(todayEnergy.getCostAverageDaily());
+                energy.setCO2(totalCO2);
+                msg = energy.toJSON().toString();
+//                msg = "[" + msg + "]";
 
                 //http://stackoverflow.com/questions/21974407/how-to-stream-a-json-object-to-a-httpurlconnection-post-request            
                 URL urlpost = new URL("http://10.44.28.105/dashboard");
@@ -145,6 +231,7 @@ public class JavaApplication1 {
             } catch (IOException ex) {
                 Logger.getLogger(JavaApplication1.class.getName()).log(Level.SEVERE, null, ex);
             }
+            indexCounter++;
         }
         
         
@@ -156,7 +243,7 @@ public class JavaApplication1 {
 
         System.out.println("Output from Server .... \n");
         while ((output = br.readLine()) != null) {
-            System.out.println(output);
+//            System.out.println(output);
             jsonData = output;
         }
         return jsonData;
@@ -164,58 +251,63 @@ public class JavaApplication1 {
     
     private static List<MyData> Extract2(String jsonData) throws JSONException {
         List<MyData> listMyData = new ArrayList<>();
-        
-        JSONArray objArray = new JSONArray(jsonData);
-        for(int i = 0; i < objArray.length(); i++){
-            System.out.println(i + "");
-            if(i==35)
-                i = 35;
-            JSONObject obj = (JSONObject) objArray.get(i);//new JSONObject(jsonData); 
-            MyData data = new MyData();
-            data.setId(obj.getString("_id"));
-            data.setCounter(Integer.parseInt(obj.getString("counter")));
-            data.setDateTime(Long.parseLong(obj.getString("dateTime")));
-//            data.setT(obj.getLong("t"));
-            data.setSensorId(obj.getString("sensorId"));
-            data.setType(Integer.parseInt(obj.getString("type")));
+        try{
+            JSONArray objArray = new JSONArray(jsonData);
+            for(int i = 0; i < objArray.length(); i++){
+//                System.out.println(i + "");
+               
+                JSONObject obj = (JSONObject) objArray.get(i);//new JSONObject(jsonData); 
+                MyData data = new MyData();
+                data.setId(obj.getString("_id"));
+                data.setCounter(Integer.parseInt(obj.getString("counter")));
+                data.setDateTime(Long.parseLong(obj.getString("dateTime")));
+                data.setT(obj.getLong("t"));
+                data.setSensorId(obj.getString("sensorId"));
+                data.setType(Integer.parseInt(obj.getString("type")));
 
-            JSONObject childrenPhase1 = new JSONObject();
-            childrenPhase1 = obj.getJSONObject("phase1");
-            PowerPhase phase1 = new PowerPhase();
-            phase1.setActivepower(childrenPhase1.getString("activepower"));
-            phase1.setApparentpower(childrenPhase1.getString("apparentpower"));
-            phase1.setCurrent(childrenPhase1.getString("current"));
-            phase1.setVoltage(childrenPhase1.getString("voltage"));
-            phase1.setPowerfactor(childrenPhase1.getString("powerfactor"));
-            phase1.setDeviceId(childrenPhase1.getString("deviceId"));
-            data.setPhase1(phase1);
-            if(data.getType() == 1){
+                JSONObject childrenPhase1 = new JSONObject();
+                childrenPhase1 = obj.getJSONObject("phase1");
+                PowerPhase phase1 = new PowerPhase();
+                phase1.setActivepower(childrenPhase1.getString("activepower"));
+                phase1.setApparentpower(childrenPhase1.getString("apparentpower"));
+                phase1.setCurrent(childrenPhase1.getString("current"));
+                phase1.setVoltage(childrenPhase1.getString("voltage"));
+                phase1.setPowerfactor(childrenPhase1.getString("powerfactor"));
+                phase1.setDeviceId(childrenPhase1.getString("deviceId"));
+                data.setPhase1(phase1);
+                if(data.getType()==1){
+                    listMyData.add(data);
+                    continue;
+                }
+
+
+                JSONObject childrenPhase2 = new JSONObject();            
+                childrenPhase2 = obj.getJSONObject("phase2");
+                PowerPhase phase2 = new PowerPhase();
+                phase2.setActivepower(childrenPhase2.getString("activepower"));
+                phase2.setApparentpower(childrenPhase2.getString("apparentpower"));
+                phase2.setCurrent(childrenPhase2.getString("current"));
+                phase2.setVoltage(childrenPhase2.getString("voltage"));
+                phase2.setPowerfactor(childrenPhase2.getString("powerfactor"));
+                phase2.setDeviceId(childrenPhase2.getString("deviceId"));
+                data.setPhase2(phase2);
+
+
+                JSONObject childrenPhase3 = new JSONObject();
+                childrenPhase3 = obj.getJSONObject("phase3");
+                PowerPhase phase3 = new PowerPhase();
+                phase3.setActivepower(childrenPhase3.getString("activepower"));
+                phase3.setApparentpower(childrenPhase3.getString("apparentpower"));
+                phase3.setCurrent(childrenPhase3.getString("current"));
+                phase3.setVoltage(childrenPhase3.getString("voltage"));
+                phase3.setPowerfactor(childrenPhase3.getString("powerfactor"));
+                phase3.setDeviceId(childrenPhase3.getString("deviceId"));
+                data.setPhase3(phase3);
                 listMyData.add(data);
-                continue;
+
             }
-
-            JSONObject childrenPhase2 = new JSONObject();
-            childrenPhase2 = obj.getJSONObject("phase2");
-            PowerPhase phase2 = new PowerPhase();
-            phase2.setActivepower(childrenPhase2.getString("activepower"));
-            phase2.setApparentpower(childrenPhase2.getString("apparentpower"));
-            phase2.setCurrent(childrenPhase2.getString("current"));
-            phase2.setVoltage(childrenPhase2.getString("voltage"));
-            phase2.setPowerfactor(childrenPhase2.getString("powerfactor"));
-            phase2.setDeviceId(childrenPhase2.getString("deviceId"));
-            data.setPhase2(phase2);
-
-            JSONObject childrenPhase3 = new JSONObject();
-            childrenPhase3 = obj.getJSONObject("phase3");
-            PowerPhase phase3 = new PowerPhase();
-            phase3.setActivepower(childrenPhase3.getString("activepower"));
-            phase3.setApparentpower(childrenPhase3.getString("apparentpower"));
-            phase3.setCurrent(childrenPhase3.getString("current"));
-            phase3.setVoltage(childrenPhase3.getString("voltage"));
-            phase3.setPowerfactor(childrenPhase3.getString("powerfactor"));
-            phase3.setDeviceId(childrenPhase3.getString("deviceId"));
-            data.setPhase3(phase3);
-            listMyData.add(data);
+        }catch (JSONException e){
+            System.out.println(e);
         }
          
         
