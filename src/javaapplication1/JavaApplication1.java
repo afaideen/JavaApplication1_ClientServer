@@ -16,19 +16,28 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javaapplication1.Helper.FindDateLastWeekEndDay;
+import static javaapplication1.Helper.FindDateLastWeekStartDay;
 import static javaapplication1.Helper.TarifCalculation;
 import javax.net.ssl.HttpsURLConnection;
+import org.apache.commons.lang3.time.DateUtils;
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  *
@@ -56,9 +65,16 @@ public class JavaApplication1 {
     private static double totalCO2;
     private static double costToday;
     private static double costAverageDaily;
-    
+    private static int dateTimeTodayStartIndex = 0;
+    private static Date dateStart, dateEnd;
+    private static Date dateToday, lastweekDateStart, lastweekDateEnd;
     
     public static void main(String[] args) throws CloneNotSupportedException {  
+        
+        dateToday = new Date();        
+        lastweekDateStart = FindDateLastWeekStartDay(dateToday); 
+        lastweekDateEnd = FindDateLastWeekEndDay(dateToday);        
+        
         sensorList = getSensorList();
         int size = sensorList.length;
         while(indexCounter < sensorList.length){
@@ -72,8 +88,10 @@ public class JavaApplication1 {
                 currentTotalEnergyActive2 = 0;
                 currentTotalEnergyActive3 = 0;
                 energy = new MyEnergy();
+                
                 while(indexHopCounter != -1){
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
+//                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM110190EE" + "&hops=" + indexHopCounter;
                     System.out.println(urlAddress);
                     URL url = new URL(urlAddress);
 
@@ -103,8 +121,28 @@ public class JavaApplication1 {
                     totalEnergyActive1 = 0;
                     totalEnergyActive2 = 0;
                     totalEnergyActive3 = 0;
+                    if(indexHopCounter == 0)
+                        dateTimeTodayStartIndex = 0;
                     for(MyData data:listData){
+                        
                         type = data.getType();
+                        long datetime = data.getDateTime()*1000;
+                        Date date = new Date(datetime);
+                        if(indexHopCounter == 0){
+                            if(!DateUtils.isSameDay(date, Calendar.getInstance().getTime()))
+                                continue;
+                            else{
+                                if(dateTimeTodayStartIndex == 0)
+                                    dateTimeTodayStartIndex = listData.indexOf(data);
+                            }
+                        }
+                        else if(indexHopCounter == 1){
+                            if(!date.after(lastweekDateStart) && !date.before(lastweekDateEnd)){
+                                System.out.println(lastweekDateStart + " - " + lastweekDateEnd + " DataIndex " + listData.indexOf(data) + " has date " + date);
+                                continue;
+                            }
+                            
+                        }
                         if(data.getType() == 1){
                             energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
                             totalEnergyActive1 = totalEnergyActive1 + energyActive1;
@@ -119,16 +157,35 @@ public class JavaApplication1 {
                             energyActive3 = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10/3600/1000;
                             totalEnergyActive3 = totalEnergyActive3 + energyActive3;
 
-                        }
-    //                    totalCost = totalEnergyActive * 0.10;
-                        long datetime = data.getDateTime()*1000;
-    //                    String timeString = new SimpleDateFormat("HH:mm:ss").format(new Date(datetime*1000));
+                        }                   
+                        
+//                        String timeString = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy").format(new Date(datetime*1000));
+                        SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+                        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+                        String timeString = sdf.format(date);
                         MyEnergy tempenergy = new MyEnergy(data.getId(), data.getSensorId(), energyActive1, totalEnergyActive1,
-                                                energyActive2, totalEnergyActive2, energyActive3, totalEnergyActive3, totalCost, datetime);//, timeString);                    
+                                                energyActive2, totalEnergyActive2, energyActive3, totalEnergyActive3, totalCost, datetime, timeString);                    
 
                         listEnergy.add(tempenergy);
                     }
-
+                    if(indexHopCounter == 0){
+                        long tStart = listData.get(dateTimeTodayStartIndex).getDateTime()*1000;
+                        dateStart = new Date(tStart);
+                        long tEnd = listData.get(listData.size() - 1).getDateTime()*1000;
+                        dateEnd = new Date(tEnd);
+                        System.out.println("Today, " + dateStart + " - " + dateEnd);
+                    }
+                    else {
+                        if(indexHopCounter == 1)
+                            System.out.println("Last week is: " + lastweekDateStart + " - " + lastweekDateEnd);
+                        long tStart = listData.get(0).getDateTime()*1000;
+                        dateStart = new Date(tStart);
+                        long tEnd = listData.get(listData.size() - 1).getDateTime()*1000;
+                        dateEnd = new Date(tEnd);
+                        System.out.println("Week, " + dateStart + " - " + dateEnd);
+                    }
+                    
+                    System.out.println("listEnergy size: " + listEnergy.size() + " total energy1: " + totalEnergyActive1);
                     int lastindex = listEnergy.size() - 1;
                     
                     if(indexHopCounter == 0){
@@ -149,6 +206,7 @@ public class JavaApplication1 {
                         todayEnergy = (MyEnergy) energy.clone();
                         costToday = energy.getCostToday();
                         costAverageDaily = energy.getCostAverageDaily();
+                        System.out.println("costToday: "+ costToday + " costAverageDaily: " + costAverageDaily);
                     }
                     else if(indexHopCounter == 1){ //week 1
                         energy = listEnergy.get(lastindex);  
@@ -168,6 +226,7 @@ public class JavaApplication1 {
                         
                         totalCO2 = (currentTotalEnergyActive1+currentTotalEnergyActive2+currentTotalEnergyActive3) * 0.67552;
                         energy.setCO2(totalCO2);
+                        System.out.println("costLastWeek: "+ costLastWeek + " costAverageWeek: " + costAverageWeek);
                         
                     }
                     else{
@@ -195,6 +254,7 @@ public class JavaApplication1 {
                 energy.setCostAverageDaily(todayEnergy.getCostAverageDaily());
                 energy.setCO2(totalCO2);
                 msg = energy.toJSON().toString();
+                System.out.println("data sent: " + msg);
 //                msg = "[" + msg + "]";
 
                 //http://stackoverflow.com/questions/21974407/how-to-stream-a-json-object-to-a-httpurlconnection-post-request            
@@ -248,8 +308,9 @@ public class JavaApplication1 {
         }
         return jsonData;
     }
-    
+    private static MyData data;
     private static List<MyData> Extract2(String jsonData) throws JSONException {
+        
         List<MyData> listMyData = new ArrayList<>();
         try{
             JSONArray objArray = new JSONArray(jsonData);
@@ -257,7 +318,7 @@ public class JavaApplication1 {
 //                System.out.println(i + "");
                
                 JSONObject obj = (JSONObject) objArray.get(i);//new JSONObject(jsonData); 
-                MyData data = new MyData();
+                data = new MyData();
                 data.setId(obj.getString("_id"));
                 data.setCounter(Integer.parseInt(obj.getString("counter")));
                 data.setDateTime(Long.parseLong(obj.getString("dateTime")));
@@ -275,6 +336,7 @@ public class JavaApplication1 {
                 phase1.setPowerfactor(childrenPhase1.getString("powerfactor"));
                 phase1.setDeviceId(childrenPhase1.getString("deviceId"));
                 data.setPhase1(phase1);
+//                System.out.println("dataType: " + data.getType());
                 if(data.getType()==1){
                     listMyData.add(data);
                     continue;
@@ -307,7 +369,7 @@ public class JavaApplication1 {
 
             }
         }catch (JSONException e){
-            System.out.println(e);
+            System.out.println(e + "dataType: " + data.getType());
         }
          
         
@@ -413,6 +475,10 @@ public class JavaApplication1 {
         return null;
         
     }
+
+    
+
+    
     
     // HTTP POST request
     //check https://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/

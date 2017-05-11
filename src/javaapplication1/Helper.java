@@ -5,6 +5,13 @@
  */
 package javaapplication1;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author han
@@ -56,6 +63,34 @@ public class Helper {
         }
  
         return totalCost;
+    }
+    
+    private static Calendar c;
+    
+    private static Date ConverDateFormat(Date dateToday, String sFormat) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat(sFormat);
+        String stringToday = sdf1.format(dateToday);
+        try {
+            dateToday = sdf1.parse(stringToday);
+        } catch (ParseException ex) {
+            Logger.getLogger(JavaApplication1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dateToday;
+    }
+    
+    public static Date FindDateLastWeekStartDay(Date dateToday) {
+        
+        dateToday = ConverDateFormat(dateToday, "dd/M/yyyy");
+        c = Calendar.getInstance();
+        c.setTime(dateToday);
+        int i = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
+        c.add(Calendar.DATE, -i - 7);
+        return c.getTime();
+    }
+    public static Date FindDateLastWeekEndDay(Date dateToday) {
+        FindDateLastWeekStartDay(dateToday);
+        c.add(Calendar.DATE, 7);
+        return c.getTime();
     }
     
 }

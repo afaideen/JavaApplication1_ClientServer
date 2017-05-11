@@ -18,11 +18,17 @@ class MyEnergy implements Cloneable {
     private double energy1, energy1Total, energy2, energy2Total, energy3, energy3Total, CO2, todayCO2, costTotal, costLastWeek, costAveWeek, costAverageDaily;
     private double costLast24H, costToday;
 
-    public MyEnergy(String id, String sensorId, double energyActive, double totalEnergyActive, double totalCost, long datetime, String timeString) {
+    public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
+                        double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
         this._id = id;
         this.sensorid = sensorId;
-        this.energy1 = energyActive;
-        this.energy1Total = totalEnergyActive;
+        this.energy1 = energyActive1;
+        this.energy1Total = totalEnergyActive1;    
+        this.energy2 = energyActive2;
+        this.energy2Total = totalEnergyActive2; 
+        this.energy3 = energyActive3;
+        this.energy3Total = totalEnergyActive3; 
+        this.costTotal = totalCost;
         this.datetime = datetime;
         this.timeString = timeString;
         this.costTotal = totalCost;
