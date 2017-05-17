@@ -17,6 +17,8 @@ class MyEnergy implements Cloneable {
     private long datetime;
     private double energy1, energy1Total, energy2, energy2Total, energy3, energy3Total, CO2, todayCO2, costTotal, costLastWeek, costAveWeek, costAverageDaily;
     private double costLast24H, costToday;
+    private long todaySampleStartT;
+    private long todaySampleEndT;
 
     public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
                         double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
@@ -207,6 +209,8 @@ class MyEnergy implements Cloneable {
             jsonObject.put("costAverageWeek", getCostAveWeek());
             jsonObject.put("costLastWeek", getCostLastWeek());
             jsonObject.put("rank", "N/A");
+            jsonObject.put("todaySampleStartT", todaySampleStartT);
+            jsonObject.put("todaySampleEndT", todaySampleEndT);
 
 //            jsonObject2.put("_id", get_id());
 //            jsonObject2.put("payload", jsonObject);
@@ -228,6 +232,23 @@ class MyEnergy implements Cloneable {
 
     public double getCostToday() {
         return costToday;
+    }
+
+    void setTodaySampleStartT(long tStart) {
+        this.todaySampleStartT= tStart;
+    }
+
+    public long getTodaySampleStartT() {
+        return todaySampleStartT;
+    }
+
+    public long getTodaySampleEndT() {
+        return todaySampleEndT;
+    }
+    
+
+    void setTodaySampleEndT(long tEnd) {
+        this.todaySampleEndT= tEnd;
     }
     
 

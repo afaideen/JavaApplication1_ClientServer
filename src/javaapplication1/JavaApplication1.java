@@ -69,6 +69,8 @@ public class JavaApplication1 {
     private static int dateTimeTodayStartIndex = 0;
     private static Date dateStart, dateEnd;
     private static Date dateToday, lastweekDateStart, lastweekDateEnd;
+    private static long tStart;
+    private static long tEnd;
     
     public static void main(String[] args) throws CloneNotSupportedException {  
         
@@ -90,7 +92,8 @@ public class JavaApplication1 {
                 currentTotalEnergyActive3 = 0;
                 energy = new MyEnergy();
                 
-                while(indexHopCounter != -1){
+//                while(indexHopCounter != -1){
+                while(indexHopCounter < 2){
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM110190EE" + "&hops=" + indexHopCounter;
                     System.out.println(urlAddress);
@@ -170,11 +173,12 @@ public class JavaApplication1 {
                         listEnergy.add(tempenergy);
                     }
                     if(indexHopCounter == 0){
-                        long tStart = listData.get(dateTimeTodayStartIndex).getDateTime()*1000;
+                        tStart = listData.get(dateTimeTodayStartIndex).getDateTime()*1000;
                         dateStart = new Date(tStart);
-                        long tEnd = listData.get(listData.size() - 1).getDateTime()*1000;
+                        tEnd = listData.get(listData.size() - 1).getDateTime()*1000;
                         dateEnd = new Date(tEnd);
                         System.out.println("Today, " + dateStart + " - " + dateEnd);
+                        
                     }
                     else {
                         if(indexHopCounter == 1)
@@ -254,6 +258,8 @@ public class JavaApplication1 {
                 energy.setCostToday(costToday);
                 energy.setCostAverageDaily(todayEnergy.getCostAverageDaily());
                 energy.setCO2(totalCO2);
+                energy.setTodaySampleStartT(tStart);
+                energy.setTodaySampleEndT(tEnd);
                 msg = energy.toJSON().toString();
                 System.out.println("data sent: " + msg);
 //                msg = "[" + msg + "]";
