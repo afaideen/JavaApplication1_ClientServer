@@ -71,6 +71,8 @@ public class JavaApplication1 {
     private static Date dateToday, lastweekDateStart, lastweekDateEnd;
     private static long tStart;
     private static long tEnd;
+    private static int weekdataLastValidIndex;
+    private static int todaydataLastValidIndex;
     
     public static void main(String[] args) throws CloneNotSupportedException {  
         
@@ -138,13 +140,15 @@ public class JavaApplication1 {
                             else{
                                 if(dateTimeTodayStartIndex == 0)
                                     dateTimeTodayStartIndex = listData.indexOf(data);
+                                todaydataLastValidIndex = listData.indexOf(data);
                             }
                         }
                         else if(indexHopCounter == 1){
-                            if(!date.after(lastweekDateStart) && !date.before(lastweekDateEnd)){
+                            if(!date.after(lastweekDateStart) || !date.before(lastweekDateEnd)){
                                 System.out.println(lastweekDateStart + " - " + lastweekDateEnd + " DataIndex " + listData.indexOf(data) + " has date " + date);
                                 continue;
                             }
+                            weekdataLastValidIndex = listData.indexOf(data);
                             
                         }
                         if(data.getType() == 1){
@@ -175,9 +179,9 @@ public class JavaApplication1 {
                     if(indexHopCounter == 0){
                         tStart = listData.get(dateTimeTodayStartIndex).getDateTime()*1000;
                         dateStart = new Date(tStart);
-                        tEnd = listData.get(listData.size() - 1).getDateTime()*1000;
+                        tEnd = listData.get(todaydataLastValidIndex).getDateTime()*1000;
                         dateEnd = new Date(tEnd);
-                        System.out.println("Today, " + dateStart + " - " + dateEnd);
+                        System.out.println("Today, " + dateStart + " - " + dateEnd + ". Last valid index is " + todaydataLastValidIndex);
                         
                     }
                     else {
@@ -185,9 +189,9 @@ public class JavaApplication1 {
                             System.out.println("Last week is: " + lastweekDateStart + " - " + lastweekDateEnd);
                         long tStart = listData.get(0).getDateTime()*1000;
                         dateStart = new Date(tStart);
-                        long tEnd = listData.get(listData.size() - 1).getDateTime()*1000;
+                        long tEnd = listData.get(weekdataLastValidIndex).getDateTime()*1000;
                         dateEnd = new Date(tEnd);
-                        System.out.println("Week, " + dateStart + " - " + dateEnd);
+                        System.out.println("Week, " + dateStart + " - " + dateEnd + ". Last valid index is " + weekdataLastValidIndex);
                     }
                     
                     System.out.println("listEnergy size: " + listEnergy.size() + " total energy1: " + totalEnergyActive1);
