@@ -73,6 +73,7 @@ public class JavaApplication1 {
     private static long tEnd;
     private static int weekdataLastValidIndex;
     private static int todaydataLastValidIndex;
+    private static double totHours;
     
     public static void main(String[] args) throws CloneNotSupportedException {  
         
@@ -135,8 +136,10 @@ public class JavaApplication1 {
                         long datetime = data.getDateTime()*1000;
                         Date date = new Date(datetime);
                         if(indexHopCounter == 0){
-                            if(!DateUtils.isSameDay(date, Calendar.getInstance().getTime()))
+                            if(!DateUtils.isSameDay(date, Calendar.getInstance().getTime())){
+//                                System.out.println("DataIndex " + listData.indexOf(data) + " has date " + date);
                                 continue;
+                            }
                             else{
                                 if(dateTimeTodayStartIndex == 0)
                                     dateTimeTodayStartIndex = listData.indexOf(data);
@@ -181,17 +184,21 @@ public class JavaApplication1 {
                         dateStart = new Date(tStart);
                         tEnd = listData.get(todaydataLastValidIndex).getDateTime()*1000;
                         dateEnd = new Date(tEnd);
-                        System.out.println("Today, " + dateStart + " - " + dateEnd + ". Last valid index is " + todaydataLastValidIndex);
+                        totHours = ((tEnd/1000.0-tStart/1000.0)/60)/60;
+                        System.out.println("Today, " + dateStart + " - " + dateEnd + ". Start index is " + dateTimeTodayStartIndex + ". Last valid index is " + todaydataLastValidIndex);
+                        System.out.println("Today duration hours is " + ((tEnd/1000.0-tStart/1000.0)/60)/60);
                         
                     }
                     else {
                         if(indexHopCounter == 1)
                             System.out.println("Last week is: " + lastweekDateStart + " - " + lastweekDateEnd);
-                        long tStart = listData.get(0).getDateTime()*1000;
+                        tStart = listData.get(0).getDateTime()*1000;
                         dateStart = new Date(tStart);
-                        long tEnd = listData.get(weekdataLastValidIndex).getDateTime()*1000;
+                        tEnd = listData.get(weekdataLastValidIndex).getDateTime()*1000;
                         dateEnd = new Date(tEnd);
+                        totHours = ((tEnd/1000.0-tStart/1000.0)/60)/60;
                         System.out.println("Week, " + dateStart + " - " + dateEnd + ". Last valid index is " + weekdataLastValidIndex);
+                        System.out.println("Week duration hours is " + ((tEnd/1000.0-tStart/1000.0)/60)/60);
                     }
                     
                     System.out.println("listEnergy size: " + listEnergy.size() + " total energy1: " + totalEnergyActive1);
@@ -207,7 +214,7 @@ public class JavaApplication1 {
                         energy.setCostTotal(totalCost);
 
                         energy.setCostToday(totalCostWeek[0]);
-                        double totHours = (listEnergy.size()*10/60)/60;
+//                        totHours = ((tEnd/1000.0-tStart/1000.0)/60)/60;
                         energy.setCostAverageDaily(energy.getCostToday()/totHours);
                         
                         totalCO2 = (currentTotalEnergyActive1+currentTotalEnergyActive2+currentTotalEnergyActive3) * 0.67552;
@@ -228,7 +235,7 @@ public class JavaApplication1 {
                         
                         
                         energy.setCostLastWeek(totalCostWeek[1]);
-                        double totHours = 24 * 7; //24hours x 7 days
+//                        totHours = 24 * 7; //24hours x 7 days
                         energy.setCostAveWeek(energy.getCostLastWeek()/totHours);
                         costLastWeek = energy.getCostLastWeek();
                         costAverageWeek = energy.getCostAveWeek();                        
