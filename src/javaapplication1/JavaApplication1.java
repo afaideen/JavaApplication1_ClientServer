@@ -19,6 +19,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import static java.time.temporal.TemporalQueries.zone;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +33,8 @@ import static javaapplication1.Helper.FindDateLastWeekStartDay;
 import static javaapplication1.Helper.TarifCalculation;
 import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 
 
@@ -58,7 +61,7 @@ public class JavaApplication1 {
     public static String[] sensorList;
     public static String urlAddress;
     static int indexCounter = 0, indexHopCounter = 0;
-    private static MyEnergy todayEnergy, energy;
+    private static MyEnergy energy;
     private static double currentTotalEnergyActive1 = 0,currentTotalEnergyActive2 = 0,currentTotalEnergyActive3 = 0;
     private static int type;
     private static double costLastWeek;
@@ -80,8 +83,16 @@ public class JavaApplication1 {
     private static double[] weekEnergy, weekEnergyAggregate;
     private static List<MyEnergy> listEnergy;
 
-    public static void main(String[] args) throws CloneNotSupportedException {
+    private static Date startDate;
+    private static Helper helper = new Helper();
 
+    public static void main(String[] args) throws CloneNotSupportedException {
+//        startDate = helper.SetDate("1/05/2017 00:00:00");//dd/MM/yyyy HH:mm:ss
+//        DateTime dateTime = helper.ConvertToJodaTime(startDate);
+//        if(helper.IsInThisMonth(dateTime)){
+//            // You have a hit.
+//            System.out.println("you hit");
+//        }
         
         sensorList = getSensorList();
         int size = sensorList.length;
@@ -192,7 +203,7 @@ public class JavaApplication1 {
                         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                         String timeString = sdf.format(date);
                         MyEnergy tempenergy = new MyEnergy(data.getId(), data.getSensorId(), energyActive1, totalEnergyActive1,
-                                                energyActive2, totalEnergyActive2, energyActive3, totalEnergyActive3, totalCost, datetime, timeString);                    
+                                                energyActive2, totalEnergyActive2, energyActive3, totalEnergyActive3, totalCost, datetime, timeString);
 
                         listEnergy.add(tempenergy);
                     }

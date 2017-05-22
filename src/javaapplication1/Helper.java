@@ -5,6 +5,10 @@
  */
 package javaapplication1;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -92,5 +96,33 @@ public class Helper {
         c.add(Calendar.DATE, 7);
         return c.getTime();
     }
-    
+
+    public Date SetDate(String startDateString) {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date startDate = new Date();
+        try {
+            startDate = df.parse(startDateString);
+//            String newDateString = df.format(startDate);
+//            System.out.println(newDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return  startDate;
+    }
+
+    private static final DateTimeZone zone = DateTimeZone.forID("Etc/GMT-8");
+    public DateTime ConvertToJodaTime(Date startDate) {
+
+        DateTime dateTime = new DateTime( startDate, zone );  // Convert java.util.Date to Joda-Time, and assign time zone to adjust.
+        return  dateTime;
+    }
+
+    public boolean IsInThisMonth(DateTime dateTime) {
+        DateTime now = DateTime.now( zone );
+        // Now see if the month and year match.
+        if ( ( dateTime.getMonthOfYear() == now.getMonthOfYear() ) && ( dateTime.getYear() == now.getYear() ) ) {
+            return true;
+        }
+        return false;
+    }
 }

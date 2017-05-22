@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_javaapplication1_clientserver" default="compile.module.javaapplication1_clientserver">
+  <dirname property="module.javaapplication1_clientserver.basedir" file="${ant.file.module_javaapplication1_clientserver}"/>
+  
+  <property name="module.jdk.home.javaapplication1_clientserver" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.javaapplication1_clientserver" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.javaapplication1_clientserver" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.javaapplication1_clientserver" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="javaapplication1_clientserver.output.dir" value="${module.javaapplication1_clientserver.basedir}/out/production/JavaApplication1_ClientServer"/>
+  <property name="javaapplication1_clientserver.testoutput.dir" value="${module.javaapplication1_clientserver.basedir}/out/test/JavaApplication1_ClientServer"/>
+  
+  <path id="javaapplication1_clientserver.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="javaapplication1_clientserver.module.production.classpath">
+    <path refid="${module.jdk.classpath.javaapplication1_clientserver}"/>
+    <path refid="library.lib1.classpath"/>
+  </path>
+  
+  <path id="javaapplication1_clientserver.runtime.production.module.classpath">
+    <pathelement location="${javaapplication1_clientserver.output.dir}"/>
+    <path refid="library.lib1.classpath"/>
+  </path>
+  
+  <path id="javaapplication1_clientserver.module.classpath">
+    <path refid="${module.jdk.classpath.javaapplication1_clientserver}"/>
+    <pathelement location="${javaapplication1_clientserver.output.dir}"/>
+    <path refid="library.lib1.classpath"/>
+  </path>
+  
+  <path id="javaapplication1_clientserver.runtime.module.classpath">
+    <pathelement location="${javaapplication1_clientserver.testoutput.dir}"/>
+    <pathelement location="${javaapplication1_clientserver.output.dir}"/>
+    <path refid="library.lib1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.javaapplication1_clientserver">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.javaapplication1_clientserver">
+    <patternset refid="excluded.from.module.javaapplication1_clientserver"/>
+  </patternset>
+  
+  <path id="javaapplication1_clientserver.module.sourcepath">
+    <dirset dir="${module.javaapplication1_clientserver.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.javaapplication1_clientserver" depends="compile.module.javaapplication1_clientserver.production,compile.module.javaapplication1_clientserver.tests" description="Compile module JavaApplication1_ClientServer"/>
+  
+  <target name="compile.module.javaapplication1_clientserver.production" depends="register.custom.compilers" description="Compile module JavaApplication1_ClientServer; production classes">
+    <mkdir dir="${javaapplication1_clientserver.output.dir}"/>
+    <javac2 destdir="${javaapplication1_clientserver.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.javaapplication1_clientserver}/javac">
+      <compilerarg line="${compiler.args.javaapplication1_clientserver}"/>
+      <bootclasspath refid="javaapplication1_clientserver.module.bootclasspath"/>
+      <classpath refid="javaapplication1_clientserver.module.production.classpath"/>
+      <src refid="javaapplication1_clientserver.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.javaapplication1_clientserver"/>
+    </javac2>
+    
+    <copy todir="${javaapplication1_clientserver.output.dir}">
+      <fileset dir="${module.javaapplication1_clientserver.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.javaapplication1_clientserver.tests" depends="register.custom.compilers,compile.module.javaapplication1_clientserver.production" description="compile module JavaApplication1_ClientServer; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.javaapplication1_clientserver" description="cleanup module">
+    <delete dir="${javaapplication1_clientserver.output.dir}"/>
+    <delete dir="${javaapplication1_clientserver.testoutput.dir}"/>
+  </target>
+</project>
