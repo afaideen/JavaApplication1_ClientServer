@@ -15,7 +15,7 @@ import org.json.JSONObject;
 class MyEnergy implements Cloneable {
     private String timeString, sensorid, _id;
     private long datetime;
-    private double energy1, energy1Total, energy2, energy2Total, energy3, energy3Total, CO2, todayCO2, costTotal, costLastWeek, costAveWeek, costAverageDaily;
+    private double energyTotal, energy1, energy1Total, energy2, energy2Total, energy3, energy3Total, CO2, todayCO2, costTotal, costLastWeek, costAveWeek, costAverageDaily;
     private double costLast24H, costToday;
     private long todaySampleStartT;
     private long todaySampleEndT;
@@ -250,8 +250,12 @@ class MyEnergy implements Cloneable {
     void setTodaySampleEndT(long tEnd) {
         this.todaySampleEndT= tEnd;
     }
-    
 
-   
-    
+    public double getEnergyTotal() {
+        return energyTotal;
+    }
+
+    public void setEnergyTotal(double energyTotal) {
+        this.energyTotal = energyTotal;
+    }
 }
