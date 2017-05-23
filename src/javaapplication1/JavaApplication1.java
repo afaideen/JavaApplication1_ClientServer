@@ -145,6 +145,7 @@ public class JavaApplication1 {
                 weekEnergyAggregate = new double[52];
                 energy = new MyEnergy();
                 listTotalData = new ArrayList<MyData>();
+                List<MyEnergy>[] listMonthEnergy = new List[12];
                 while(indexHopCounter >= 0){
 //                while(indexHopCounter < 2){
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
@@ -175,13 +176,8 @@ public class JavaApplication1 {
                     listTotalData.addAll(listData);
 
 //                    listEnergy = new ArrayList<>();
-//                    conn.disconnect();
-//                    energyActive1 = 0;
-//                    energyActive2 = 0;
-//                    energyActive3 = 0;
-//                    totalEnergyActive1 = 0;
-//                    totalEnergyActive2 = 0;
-//                    totalEnergyActive3 = 0;
+                    conn.disconnect();
+
 //                    if(indexHopCounter > 0) {
 //                        lastweekDateStart[indexHopCounter] = FindDateLastWeekStartDay(lastweekDateStart[indexHopCounter - 1]);
 //                        lastweekDateEnd[indexHopCounter] = FindDateLastWeekEndDay(lastweekDateStart[indexHopCounter - 1]);
@@ -198,11 +194,17 @@ public class JavaApplication1 {
                     indexHopCounter++;//next week
                 }
                 Collections.sort(listTotalData, new MyComparator());
-                List<MyEnergy>[] listMonthEnergy = new List[12];
+
                 for (int i = 0; i < 12; i++) {
                     if(listMonthEnergy[i]==null)
                         listMonthEnergy[i] = new ArrayList<MyEnergy>();
                 }
+                energyActive1 = 0;
+                energyActive2 = 0;
+                energyActive3 = 0;
+                totalEnergyActive1 = 0;
+                totalEnergyActive2 = 0;
+                totalEnergyActive3 = 0;
                 for (MyData data : listTotalData) {
                     energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
                     totalEnergyActive1 = totalEnergyActive1 + energyActive1;
