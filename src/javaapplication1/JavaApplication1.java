@@ -83,12 +83,12 @@ public class JavaApplication1 {
     private static Helper helper = new Helper();
 
     public static void main(String[] args) throws CloneNotSupportedException {
-//        startDate = helper.SetDate("1/05/2017 00:00:00");//dd/MM/yyyy HH:mm:ss
-//        DateTime dateTime = helper.ConvertToJodaTime(startDate);
-//        if(helper.IsInThisMonth(dateTime)){
-//            // You have a hit.
-//            System.out.println("you hit");
-//        }
+        startDate = helper.SetDate("1/05/2017 00:00:00");//dd/MM/yyyy HH:mm:ss
+        DateTime dateTime = helper.ConvertToJodaTime(startDate);
+        if(helper.IsInThisMonth(dateTime)){
+            // You have a hit.
+            System.out.println("you hit");
+        }
         
         sensorList = getSensorList();
         int size = sensorList.length;
