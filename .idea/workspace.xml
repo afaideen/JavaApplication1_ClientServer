@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="334a987f-db0f-4525-b093-c938a50fd3fa" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/JavaApplication1.class" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" afterPath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" />
     </list>
@@ -28,8 +27,8 @@
       <file leaf-file-name="JavaApplication1.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
-              <caret line="100" column="32" lean-forward="true" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+            <state relative-caret-position="454">
+              <caret line="105" column="32" lean-forward="true" selection-start-line="105" selection-start-column="32" selection-end-line="105" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#27782#27783#0" expanded="true" />
@@ -59,6 +58,11 @@
     </replaceStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="han" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
@@ -412,7 +416,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495537281130</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add example how to use replace function in List.">
+      <created>1495539382400</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1495539382400</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -511,7 +522,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Create ConvertToJodaTime()" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create ConvertToJodaTime()" />
+    <MESSAGE value="Add example how to use replace function in List." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add example how to use replace function in List." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1120,8 +1132,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="100" column="32" lean-forward="true" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+        <state relative-caret-position="454">
+          <caret line="105" column="32" lean-forward="true" selection-start-line="105" selection-start-column="32" selection-end-line="105" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#27782#27783#0" expanded="true" />

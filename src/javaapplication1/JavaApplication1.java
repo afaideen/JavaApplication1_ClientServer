@@ -14,12 +14,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javaapplication1.Helper.FindDateLastWeekEndDay;
@@ -34,7 +29,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import java.util.function.*;
 
 /**
  *
@@ -89,7 +84,35 @@ public class JavaApplication1 {
             // You have a hit.
             System.out.println("you hit");
         }
-        
+
+        List<String> list = Arrays.asList("a","ba",new String("a"));
+        System.out.println(list);
+        Collections.replaceAll(list, "a", "!!!!!");
+        System.out.println(list);
+        ArrayList<String> color_list;
+        MyOperator<String> operator;
+
+        color_list = new ArrayList<> ();
+        operator = new MyOperator<> ();
+
+        operator.varc1 = "red";
+
+        // use add() method to add values in the list
+        color_list.add("White");
+        color_list.add("Black");
+        color_list.add("Red");
+        color_list.add("White");
+        color_list.add("Yellow");
+        color_list.add("White");
+
+        System.out.println("List of Colors");
+        System.out.println(color_list);
+
+        // Replace all colors with White color
+        color_list.replaceAll(operator);
+        System.out.println("Color list, after replacing all colors with White color :");
+        System.out.println(color_list);
+
         sensorList = getSensorList();
         int size = sensorList.length;
         while(indexCounter < sensorList.length){
@@ -583,5 +606,12 @@ public class JavaApplication1 {
         average = arrayTotal / aryNums.length;
         System.out.println("total: " + average);
     }
-    
+
+    static class MyOperator<T> implements UnaryOperator<T> {
+        T varc1;
+        public T apply(T varc){
+            return varc1;
+        }
+
+    }
 }
