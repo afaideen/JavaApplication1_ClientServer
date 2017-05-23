@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="334a987f-db0f-4525-b093-c938a50fd3fa" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/JavaApplication1.class" afterPath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/JavaApplication1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" afterPath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" />
     </list>
@@ -27,12 +28,12 @@
       <file leaf-file-name="JavaApplication1.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="102" column="30" lean-forward="true" selection-start-line="102" selection-start-column="30" selection-end-line="102" selection-end-column="30" />
+            <state relative-caret-position="389">
+              <caret line="102" column="32" lean-forward="true" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#28086#28087#0" expanded="true" />
-                <element signature="e#28122#28123#0" expanded="true" />
+                <element signature="e#28576#28577#0" expanded="true" />
+                <element signature="e#28612#28613#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -438,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495539488172</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add Unary operator operator2">
+      <created>1495541931048</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1495541931048</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -467,12 +475,12 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32790446" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20149253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20149253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38002172" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37973273" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -549,22 +557,17 @@
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <MESSAGE value="Create ConvertToJodaTime()" />
     <MESSAGE value="Add example how to use replace function in List." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add example how to use replace function in List." />
+    <MESSAGE value="Add Unary operator operator2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Unary operator operator2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>501</line>
+          <line>513</line>
           <properties />
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>279</line>
-          <properties />
-          <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>jar://C:/Program Files/Java/jdk1.8.0_25/jre/lib/rt.jar!/java/util/function/Function.class</url>
@@ -573,7 +576,7 @@
           <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="56" />
+      <option name="time" value="58" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -675,8 +678,8 @@
           <caret line="207" column="24" lean-forward="false" selection-start-line="207" selection-start-column="24" selection-end-line="207" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -687,8 +690,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -735,8 +738,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -783,8 +786,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -831,8 +834,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -879,8 +882,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -919,8 +922,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -960,8 +963,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1159,12 +1162,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="102" column="30" lean-forward="true" selection-start-line="102" selection-start-column="30" selection-end-line="102" selection-end-column="30" />
+        <state relative-caret-position="389">
+          <caret line="102" column="32" lean-forward="true" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#28086#28087#0" expanded="true" />
-            <element signature="e#28122#28123#0" expanded="true" />
+            <element signature="e#28576#28577#0" expanded="true" />
+            <element signature="e#28612#28613#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -29,6 +29,8 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.swing.*;
 import java.util.function.*;
 
 /**
@@ -87,7 +89,7 @@ public class JavaApplication1 {
 
         List<String> list = Arrays.asList("a","ba",new String("a"));
         System.out.println(list);
-        Collections.replaceAll(list, "a", "!!!!!");
+        Collections.replaceAll(list, "a", "!!!!!");//easiest way to replace collection contents
         System.out.println(list);
         ArrayList<String> color_list;
         MyOperator<String> operator;
@@ -104,6 +106,16 @@ public class JavaApplication1 {
         color_list.add("White");
         color_list.add("Yellow");
         color_list.add("White");
+        System.out.println("List of Colors initially");
+        System.out.println(color_list);
+        // use add() method to add values in the list
+        List<String> sample = new ArrayList<>();
+        sample.add("Green");
+        sample.add("Red");
+        sample.add("White");
+        sample.retainAll(color_list);
+        System.out.println("After applying sample.retainAll()");
+        System.out.println(sample);
 
         System.out.println("List of Colors");
         System.out.println(color_list);
