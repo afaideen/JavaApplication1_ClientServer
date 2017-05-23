@@ -8,17 +8,22 @@ package javaapplication1;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  *
  * @author han
  */
-class MyEnergy implements Cloneable {
+public class MyEnergy implements Cloneable {
     private String timeString, sensorid, _id;
     private long datetime;
     private double energyTotal, energy1, energy1Total, energy2, energy2Total, energy3, energy3Total, CO2, todayCO2, costTotal, costLastWeek, costAveWeek, costAverageDaily;
     private double costLast24H, costToday;
     private long todaySampleStartT;
     private long todaySampleEndT;
+    private Date date;
+    private int type;
+    private int month;
 
     public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
                         double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
@@ -58,6 +63,10 @@ class MyEnergy implements Cloneable {
 
     public String get_id() {
         return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getTimeString() {
@@ -257,5 +266,29 @@ class MyEnergy implements Cloneable {
 
     public void setEnergyTotal(double energyTotal) {
         this.energyTotal = energyTotal;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    public Date getDate() {
+        return date;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getMonth() {
+        return month;
     }
 }

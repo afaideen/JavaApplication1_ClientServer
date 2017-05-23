@@ -9,17 +9,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import static java.time.temporal.TemporalQueries.zone;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,11 +25,10 @@ import java.util.logging.Logger;
 import static javaapplication1.Helper.FindDateLastWeekEndDay;
 import static javaapplication1.Helper.FindDateLastWeekStartDay;
 import static javaapplication1.Helper.TarifCalculation;
-import javax.net.ssl.HttpsURLConnection;
+
+import javaapplication1.model.EnergyInfo;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 
 
 import org.json.JSONArray;
@@ -82,6 +75,9 @@ public class JavaApplication1 {
     private static double totalEnergy;
     private static double[] weekEnergy, weekEnergyAggregate;
     private static List<MyEnergy> listEnergy;
+    static double energyActive1 = 0;
+    static double energyActive2 = 0;
+    static double energyActive3 = 0;
 
     private static Date startDate;
     private static Helper helper = new Helper();
@@ -110,13 +106,10 @@ public class JavaApplication1 {
                 weekEnergy = new double[52];
                 weekEnergyAggregate = new double[52];
                 energy = new MyEnergy();
-
-
-                
                 while(indexHopCounter >= 0){
 //                while(indexHopCounter < 2){
-//                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
-                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
+                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
+//                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
                     System.out.println(urlAddress);
                     URL url = new URL(urlAddress);
 
@@ -127,7 +120,7 @@ public class JavaApplication1 {
                                 throw new RuntimeException("Failed : HTTP error code : "
                                                 + conn.getResponseCode());
                         }
-
+                    System.out.println("Read json data...");
                     jsonArrayData = ReadData(conn);
                     if(jsonArrayData.equals("[]")){
                         indexHopCounter = -1;
@@ -142,7 +135,9 @@ public class JavaApplication1 {
                     }
                     listEnergy = new ArrayList<>();
                     conn.disconnect();
-                    double energyActive1 = 0, energyActive2 = 0, energyActive3 = 0;
+                    energyActive1 = 0;
+                    energyActive2 = 0;
+                    energyActive3 = 0;
                     totalEnergyActive1 = 0;
                     totalEnergyActive2 = 0;
                     totalEnergyActive3 = 0;
@@ -156,110 +151,8 @@ public class JavaApplication1 {
                         lastweekDateEnd[0] = FindDateLastWeekEndDay(dateToday);
                         dateTimeTodayStartIndex = 0;
                     }
-
-
-                    for(MyData data:listData){
-                        
-                        type = data.getType();
-                        long datetime = data.getDateTime()*1000;
-                        Date date = new Date(datetime);
-                        if(indexHopCounter == 0){
-                            if(!DateUtils.isSameDay(date, Calendar.getInstance().getTime())){
-//                                System.out.println("DataIndex " + listData.indexOf(data) + " has date " + date);
-                                continue;
-                            }
-                            else{
-                                if(dateTimeTodayStartIndex == 0)
-                                    dateTimeTodayStartIndex = listData.indexOf(data);
-                                todaydataLastValidIndex = listData.indexOf(data);
-                            }
-                        }
-                        else {
-                            if (!date.after(lastweekDateStart[indexHopCounter-1]) || !date.before(lastweekDateEnd[indexHopCounter-1])) {
-//                                System.out.println(lastweekDateStart + " - " + lastweekDateEnd + " DataIndex " + listData.indexOf(data) + " has date " + date);
-                                continue;
-                            }
-                            weekdataLastValidIndex = listData.indexOf(data);
-                            
-                        }
-                        if(data.getType() == 1){
-                            energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
-                            totalEnergyActive1 = totalEnergyActive1 + energyActive1;
-                        }
-                        else{
-                            energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
-                            totalEnergyActive1 = totalEnergyActive1 + energyActive1;
-                            
-                            energyActive2 = Math.abs(Double.parseDouble(data.getPhase2().getActivepower())) * 10/3600/1000;
-                            totalEnergyActive2 = totalEnergyActive2 + energyActive2;
-
-                            energyActive3 = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10/3600/1000;
-                            totalEnergyActive3 = totalEnergyActive3 + energyActive3;
-
-                        }                   
-                        
-//                        String timeString = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy").format(new Date(datetime*1000));
-                        SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
-                        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-                        String timeString = sdf.format(date);
-                        MyEnergy tempenergy = new MyEnergy(data.getId(), data.getSensorId(), energyActive1, totalEnergyActive1,
-                                                energyActive2, totalEnergyActive2, energyActive3, totalEnergyActive3, totalCost, datetime, timeString);
-
-                        listEnergy.add(tempenergy);
-                    }
-                    if(indexHopCounter == 0){
-                        tStart = listData.get(dateTimeTodayStartIndex).getDateTime()*1000;
-                        dateStart = new Date(tStart);
-                        tEnd = listData.get(todaydataLastValidIndex).getDateTime()*1000;
-                        dateEnd = new Date(tEnd);
-                        totHours = ((tEnd/1000.0-tStart/1000.0)/60)/60;
-                        System.out.println("Today, " + dateStart + " - " + dateEnd + ". Start index is " + dateTimeTodayStartIndex + ". Last valid index is " + todaydataLastValidIndex);
-                        System.out.println("Today duration hours is " + ((tEnd/1000.0-tStart/1000.0)/60)/60);
-                        
-                    }
-                    else {
-                        if(indexHopCounter == 1)
-                            System.out.println("Last week is: " + lastweekDateStart[indexHopCounter-1] + " - " + lastweekDateEnd[indexHopCounter-1]);
-                        else
-                            System.out.println("Week is: " + lastweekDateStart[indexHopCounter-1] + " - " + lastweekDateEnd[indexHopCounter-1]);
-                        tStart = listData.get(0).getDateTime()*1000;
-                        dateStart = new Date(tStart);
-                        tEnd = listData.get(weekdataLastValidIndex).getDateTime()*1000;
-                        dateEnd = new Date(tEnd);
-                        totHours = ((tEnd/1000.0-tStart/1000.0)/60)/60;
-                        System.out.println("Week, " + dateStart + " - " + dateEnd + ". Last valid index is " + weekdataLastValidIndex);
-                        System.out.println("Week duration hours is " + ((tEnd/1000.0-tStart/1000.0)/60)/60);
-                    }
-
-                    int lastindex = listEnergy.size() - 1;
-                    energy  = listEnergy.get(lastindex);
-                    currentTotalEnergyActive1 = currentTotalEnergyActive1 + energy.getEnergy1Total();
-                    currentTotalEnergyActive2 = currentTotalEnergyActive2 + energy.getEnergy2Total();
-                    currentTotalEnergyActive3 = currentTotalEnergyActive3 + energy.getEnergy3Total();
-                    totalEnergy = currentTotalEnergyActive1 + currentTotalEnergyActive2 + currentTotalEnergyActive3;
-                    System.out.println("listEnergy size: " + listEnergy.size() + " total energy: " + totalEnergy );
-                    totalCostWeek[indexHopCounter] = TarifCalculation(energy);
-                    totalCost += totalCostWeek[indexHopCounter];
-                    totalCO2 = totalEnergy * 0.67552;
-
-                    if(indexHopCounter == 0){
-                        costToday = totalCostWeek[0];//energy.getCostToday();
-                        costAverageDaily = energy.getCostToday()/totHours;//energy.getCostAverageDaily();
-                        System.out.println("costToday: "+ costToday + " costAverageDaily: " + costAverageDaily);
-                    }
-                    else if(indexHopCounter == 1){ //week 1
-                        costLastWeek = totalCostWeek[1];//energy.getCostLastWeek();
-                        costAverageWeek = costLastWeek/totHours;//energy.getCostAveWeek();
-                        System.out.println("costLastWeek: "+ costLastWeek + " costAverageWeek: " + costAverageWeek);
-                        
-                    }
-
-                    weekEnergy[indexHopCounter] = totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3;
-                    if(indexHopCounter == 0)
-                        weekEnergyAggregate[indexHopCounter] = weekEnergy[indexHopCounter];
-                    else {
-                        weekEnergyAggregate[indexHopCounter] = weekEnergy[indexHopCounter] + weekEnergyAggregate[indexHopCounter-1];
-                    }
+//                    ProcessDataWeekly(listData);
+                    ProcessDataMonthly(listData);
 
                     indexHopCounter++;//next week
                 }
@@ -310,6 +203,162 @@ public class JavaApplication1 {
         }
         
         
+    }
+
+    private static MyEnergy monthlyEnergy = new MyEnergy();
+    private static List<MyEnergy> listMonthlyEnergy = new ArrayList<>();
+    private static EnergyInfo[] monthInfo = new EnergyInfo[12];
+    private static void ProcessDataMonthly(List<MyData> listData) {
+        int month = 0;
+        for (int i = 0; i < 12; i++) {
+            if(monthInfo[i]==null)
+                monthInfo[i] = new EnergyInfo();
+        }
+        for(MyData data:listData){
+            long datetime = data.getDateTime()*1000;
+            Date date = new Date(datetime);
+            DateTime jodaDate = helper.ConvertToJodaTime(date);
+            month = jodaDate.getMonthOfYear();
+            SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+            String timeString = sdf.format(date);
+
+            CalculateEnergy(data);
+            if(monthlyEnergy.getMonth() != month){
+                listMonthlyEnergy.clear();
+            }
+            monthlyEnergy.setMonth(month);
+            monthlyEnergy.setSensorid(data.getSensorId());
+            monthlyEnergy.set_id(data.getId());
+            monthlyEnergy.setType(data.getType());
+            monthlyEnergy.setEnergy1(energyActive1);
+            monthlyEnergy.setEnergy1Total(totalEnergyActive1);
+            monthlyEnergy.setEnergy2(energyActive2);
+            monthlyEnergy.setEnergy2Total(totalEnergyActive2);
+            monthlyEnergy.setEnergy3(energyActive3);
+            monthlyEnergy.setEnergy3Total(totalEnergyActive3);
+
+            monthlyEnergy.setEnergyTotal(totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3);
+            monthlyEnergy.setDatetime(datetime);
+            monthlyEnergy.setDate(date);
+            monthlyEnergy.setTimeString(timeString);
+            listMonthlyEnergy.add(monthlyEnergy);
+
+            monthInfo[month].setlistMonthlyEnergy(listMonthlyEnergy);
+
+        }
+
+    }
+
+    private static void ProcessDataWeekly(List<MyData> listData) {
+        for(MyData data:listData){
+
+            type = data.getType();
+            long datetime = data.getDateTime()*1000;
+            Date date = new Date(datetime);
+            if(indexHopCounter == 0){
+                if(!DateUtils.isSameDay(date, Calendar.getInstance().getTime())){
+                    System.out.println("DataIndex " + listData.indexOf(data) + " has date " + date);
+                    continue;
+                }
+                else{
+                    if(dateTimeTodayStartIndex == 0)
+                        dateTimeTodayStartIndex = listData.indexOf(data);
+                    todaydataLastValidIndex = listData.indexOf(data);
+                }
+            }
+            else {
+                if (!date.after(lastweekDateStart[indexHopCounter-1]) || !date.before(lastweekDateEnd[indexHopCounter-1])) {
+                    System.out.println(lastweekDateStart[indexHopCounter-1] + " - " + lastweekDateEnd[indexHopCounter-1] + " DataIndex " + listData.indexOf(data) + " has date " + date);
+                    continue;
+                }
+                weekdataLastValidIndex = listData.indexOf(data);
+
+            }
+            CalculateEnergy(data);
+
+//                        String timeString = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy").format(new Date(datetime*1000));
+            SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+            String timeString = sdf.format(date);
+            MyEnergy tempenergy = new MyEnergy(data.getId(), data.getSensorId(), energyActive1, totalEnergyActive1,
+                    energyActive2, totalEnergyActive2, energyActive3, totalEnergyActive3, totalCost, datetime, timeString);
+            listEnergy.add(tempenergy);
+        }
+
+        if(indexHopCounter == 0){
+            tStart = listData.get(dateTimeTodayStartIndex).getDateTime()*1000;
+            dateStart = new Date(tStart);
+            tEnd = listData.get(todaydataLastValidIndex).getDateTime()*1000;
+            dateEnd = new Date(tEnd);
+            totHours = ((tEnd/1000.0-tStart/1000.0)/60)/60;
+            System.out.println("Today, " + dateStart + " - " + dateEnd + ". Start index is " + dateTimeTodayStartIndex + ". Last valid index is " + todaydataLastValidIndex);
+            System.out.println("Today duration hours is " + ((tEnd/1000.0-tStart/1000.0)/60)/60);
+
+        }
+        else {
+            if(indexHopCounter == 1)
+                System.out.println("Last week is: " + lastweekDateStart[indexHopCounter-1] + " - " + lastweekDateEnd[indexHopCounter-1]);
+            else
+                System.out.println("Week is: " + lastweekDateStart[indexHopCounter-1] + " - " + lastweekDateEnd[indexHopCounter-1]);
+            tStart = listData.get(0).getDateTime()*1000;
+            dateStart = new Date(tStart);
+            tEnd = listData.get(weekdataLastValidIndex).getDateTime()*1000;
+            dateEnd = new Date(tEnd);
+            totHours = ((tEnd/1000.0-tStart/1000.0)/60)/60;
+            System.out.println("Week, " + dateStart + " - " + dateEnd + ". Last valid index is " + weekdataLastValidIndex);
+            System.out.println("Week duration hours is " + ((tEnd/1000.0-tStart/1000.0)/60)/60);
+        }
+
+        int lastindex = listEnergy.size() - 1;
+        energy  = listEnergy.get(lastindex);
+        currentTotalEnergyActive1 = currentTotalEnergyActive1 + energy.getEnergy1Total();
+        currentTotalEnergyActive2 = currentTotalEnergyActive2 + energy.getEnergy2Total();
+        currentTotalEnergyActive3 = currentTotalEnergyActive3 + energy.getEnergy3Total();
+        totalEnergy = currentTotalEnergyActive1 + currentTotalEnergyActive2 + currentTotalEnergyActive3;
+        System.out.println("listEnergy size: " + listEnergy.size() + " total energy: " + totalEnergy );
+        totalCostWeek[indexHopCounter] = TarifCalculation(energy);
+        totalCost += totalCostWeek[indexHopCounter];
+        totalCO2 = totalEnergy * 0.67552;
+
+        if(indexHopCounter == 0){
+            costToday = totalCostWeek[0];//energy.getCostToday();
+            costAverageDaily = energy.getCostToday()/totHours;//energy.getCostAverageDaily();
+            System.out.println("costToday: "+ costToday + " costAverageDaily: " + costAverageDaily);
+        }
+        else if(indexHopCounter == 1){ //week 1
+            costLastWeek = totalCostWeek[1];//energy.getCostLastWeek();
+            costAverageWeek = costLastWeek/totHours;//energy.getCostAveWeek();
+            System.out.println("costLastWeek: "+ costLastWeek + " costAverageWeek: " + costAverageWeek);
+
+        }
+
+        weekEnergy[indexHopCounter] = totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3;
+        if(indexHopCounter == 0)
+            weekEnergyAggregate[indexHopCounter] = weekEnergy[indexHopCounter];
+        else {
+            weekEnergyAggregate[indexHopCounter] = weekEnergy[indexHopCounter] + weekEnergyAggregate[indexHopCounter-1];
+        }
+    }
+
+    private static void CalculateEnergy(MyData data) {
+
+        if(data.getType() == 1){
+            energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
+            totalEnergyActive1 = totalEnergyActive1 + energyActive1;
+        }
+        else{
+            energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
+            totalEnergyActive1 = totalEnergyActive1 + energyActive1;
+
+            energyActive2 = Math.abs(Double.parseDouble(data.getPhase2().getActivepower())) * 10/3600/1000;
+            totalEnergyActive2 = totalEnergyActive2 + energyActive2;
+
+            energyActive3 = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10/3600/1000;
+            totalEnergyActive3 = totalEnergyActive3 + energyActive3;
+
+        }
+
     }
 
     private static String ReadData(HttpURLConnection conn) throws IOException {
