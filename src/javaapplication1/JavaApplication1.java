@@ -78,6 +78,8 @@ public class JavaApplication1 {
 
     private static Date startDate;
     private static Helper helper = new Helper();
+    private static List<MyData> listTotalData;
+    private static int previousMonth;
 
     public static void main(String[] args) throws CloneNotSupportedException {
         startDate = helper.SetDate("1/05/2017 00:00:00");//dd/MM/yyyy HH:mm:ss
@@ -142,6 +144,7 @@ public class JavaApplication1 {
                 weekEnergy = new double[52];
                 weekEnergyAggregate = new double[52];
                 energy = new MyEnergy();
+                listTotalData = new ArrayList<MyData>();
                 while(indexHopCounter >= 0){
 //                while(indexHopCounter < 2){
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
@@ -169,28 +172,59 @@ public class JavaApplication1 {
                         indexHopCounter++;
                         continue;
                     }
-                    listEnergy = new ArrayList<>();
-                    conn.disconnect();
-                    energyActive1 = 0;
-                    energyActive2 = 0;
-                    energyActive3 = 0;
-                    totalEnergyActive1 = 0;
-                    totalEnergyActive2 = 0;
-                    totalEnergyActive3 = 0;
-                    if(indexHopCounter > 0) {
-                        lastweekDateStart[indexHopCounter] = FindDateLastWeekStartDay(lastweekDateStart[indexHopCounter - 1]);
-                        lastweekDateEnd[indexHopCounter] = FindDateLastWeekEndDay(lastweekDateStart[indexHopCounter - 1]);
-                    }
-                    else{
-                        dateToday = new Date();
-                        lastweekDateStart[0] = FindDateLastWeekStartDay(dateToday);
-                        lastweekDateEnd[0] = FindDateLastWeekEndDay(dateToday);
-                        dateTimeTodayStartIndex = 0;
-                    }
-//                    ProcessDataWeekly(listData);
-                    ProcessDataMonthly(listData);
+                    listTotalData.addAll(listData);
+
+//                    listEnergy = new ArrayList<>();
+//                    conn.disconnect();
+//                    energyActive1 = 0;
+//                    energyActive2 = 0;
+//                    energyActive3 = 0;
+//                    totalEnergyActive1 = 0;
+//                    totalEnergyActive2 = 0;
+//                    totalEnergyActive3 = 0;
+//                    if(indexHopCounter > 0) {
+//                        lastweekDateStart[indexHopCounter] = FindDateLastWeekStartDay(lastweekDateStart[indexHopCounter - 1]);
+//                        lastweekDateEnd[indexHopCounter] = FindDateLastWeekEndDay(lastweekDateStart[indexHopCounter - 1]);
+//                    }
+//                    else{
+//                        dateToday = new Date();
+//                        lastweekDateStart[0] = FindDateLastWeekStartDay(dateToday);
+//                        lastweekDateEnd[0] = FindDateLastWeekEndDay(dateToday);
+//                        dateTimeTodayStartIndex = 0;
+//                    }
+////                    ProcessDataWeekly(listData);
+//                    ProcessDataMonthly(listData);
 
                     indexHopCounter++;//next week
+                }
+                Collections.sort(listTotalData, new MyComparator());
+                List<MyEnergy>[] listMonthEnergy = new List[12];
+                for (int i = 0; i < 12; i++) {
+                    if(listMonthEnergy[i]==null)
+                        listMonthEnergy[i] = new ArrayList<MyEnergy>();
+                }
+                for (MyData data : listTotalData) {
+                    energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10/3600/1000;
+                    totalEnergyActive1 = totalEnergyActive1 + energyActive1;
+                    energyActive2 = Math.abs(Double.parseDouble(data.getPhase2().getActivepower())) * 10/3600/1000;
+                    totalEnergyActive2 = totalEnergyActive2 + energyActive2;
+                    energyActive3 = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10/3600/1000;
+                    totalEnergyActive3 = totalEnergyActive2 + energyActive3;
+                    totalEnergy = totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3;
+
+                    DateTime jodaDate = helper.ConvertToJodaTime(new Date(data.getDateTime()*1000));
+                    int currentMonth = jodaDate.getMonthOfYear();
+                    if(currentMonth!=previousMonth) {
+                        System.out.println("data index:" + listTotalData.indexOf(data));
+                        System.out.println("date:" + data.getTimeString());
+                        previousMonth = currentMonth;
+                    }
+                    MyEnergy energy = new MyEnergy();
+                    energy = SetEnergy(data);
+//                    listEnergy.add(energy);
+                    listMonthEnergy[currentMonth].add(energy);
+
+
                 }
                 
                 
@@ -241,6 +275,24 @@ public class JavaApplication1 {
         
     }
 
+    private static MyEnergy SetEnergy(MyData data) {
+        energy.setSensorid(data.getSensorId());
+        energy.set_id(data.getId());
+        energy.setDatetime(data.getDateTime());
+        Date date = new Date(data.getDateTime()*1000);
+        energy.setDate(date);
+        energy.setTimeString(data.getTimeString());
+        energy.setType(data.getType());
+        energy.setEnergy1(energyActive1);
+        energy.setEnergy1Total(totalEnergyActive1);
+        energy.setEnergy2(energyActive2);
+        energy.setEnergy2Total(totalEnergyActive2);
+        energy.setEnergy3(energyActive3);
+        energy.setEnergy3Total(totalEnergyActive3);
+        energy.setEnergyTotal(totalEnergy);
+        return energy;
+    }
+
     private static String modifyName(String pn) {
         pn = pn.concat(" test here");
         return pn;
@@ -249,47 +301,47 @@ public class JavaApplication1 {
     private static MyEnergy monthlyEnergy = new MyEnergy();
     private static List<MyEnergy> listMonthlyEnergy = new ArrayList<>();
     private static EnergyInfo[] monthInfo = new EnergyInfo[12];
-    private static void ProcessDataMonthly(List<MyData> listData) {
-        int month = 0;
-        for (int i = 0; i < 12; i++) {
-            if(monthInfo[i]==null)
-                monthInfo[i] = new EnergyInfo();
-        }
-        for(MyData data:listData){
-            long datetime = data.getDateTime()*1000;
-            Date date = new Date(datetime);
-            DateTime jodaDate = helper.ConvertToJodaTime(date);
-            month = jodaDate.getMonthOfYear();
-            SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-            String timeString = sdf.format(date);
-
-            CalculateEnergy(data);
-            if(monthlyEnergy.getMonth() != month){
-                listMonthlyEnergy.clear();
-            }
-            monthlyEnergy.setMonth(month);
-            monthlyEnergy.setSensorid(data.getSensorId());
-            monthlyEnergy.set_id(data.getId());
-            monthlyEnergy.setType(data.getType());
-            monthlyEnergy.setEnergy1(energyActive1);
-            monthlyEnergy.setEnergy1Total(totalEnergyActive1);
-            monthlyEnergy.setEnergy2(energyActive2);
-            monthlyEnergy.setEnergy2Total(totalEnergyActive2);
-            monthlyEnergy.setEnergy3(energyActive3);
-            monthlyEnergy.setEnergy3Total(totalEnergyActive3);
-
-            monthlyEnergy.setEnergyTotal(totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3);
-            monthlyEnergy.setDatetime(datetime);
-            monthlyEnergy.setDate(date);
-            monthlyEnergy.setTimeString(timeString);
-            listMonthlyEnergy.add(monthlyEnergy);
-
-            monthInfo[month].setlistMonthlyEnergy(listMonthlyEnergy);
-
-        }
-
-    }
+//    private static void ProcessDataMonthly(List<MyData> listData) {
+//        int month = 0;
+//        for (int i = 0; i < 12; i++) {
+//            if(monthInfo[i]==null)
+//                monthInfo[i] = new EnergyInfo();
+//        }
+//        for(MyData data:listData){
+//            long datetime = data.getDateTime()*1000;
+//            Date date = new Date(datetime);
+//            DateTime jodaDate = helper.ConvertToJodaTime(date);
+//            month = jodaDate.getMonthOfYear();
+//            SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+//            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//            String timeString = sdf.format(date);
+//
+//            CalculateEnergy(data);
+//            if(monthlyEnergy.getMonth() != month){
+//                listMonthlyEnergy.clear();
+//            }
+//            monthlyEnergy.setMonth(month);
+//            monthlyEnergy.setSensorid(data.getSensorId());
+//            monthlyEnergy.set_id(data.getId());
+//            monthlyEnergy.setType(data.getType());
+//            monthlyEnergy.setEnergy1(energyActive1);
+//            monthlyEnergy.setEnergy1Total(totalEnergyActive1);
+//            monthlyEnergy.setEnergy2(energyActive2);
+//            monthlyEnergy.setEnergy2Total(totalEnergyActive2);
+//            monthlyEnergy.setEnergy3(energyActive3);
+//            monthlyEnergy.setEnergy3Total(totalEnergyActive3);
+//
+//            monthlyEnergy.setEnergyTotal(totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3);
+//            monthlyEnergy.setDatetime(datetime);
+//            monthlyEnergy.setDate(date);
+//            monthlyEnergy.setTimeString(timeString);
+//            listMonthlyEnergy.add(monthlyEnergy);
+//
+//            monthInfo[month].setlistMonthlyEnergy(listMonthlyEnergy);
+//
+//        }
+//
+//    }
 
     private static void ProcessDataWeekly(List<MyData> listData) {
         for(MyData data:listData){
@@ -427,6 +479,7 @@ public class JavaApplication1 {
                 data.setId(obj.getString("_id"));
                 data.setCounter(Integer.parseInt(obj.getString("counter")));
                 data.setDateTime(Long.parseLong(obj.getString("dateTime")));
+                data.setTimeString(data.getDateTime());
                 data.setT(obj.getLong("t"));
                 data.setSensorId(obj.getString("sensorId"));
                 data.setType(Integer.parseInt(obj.getString("type")));
@@ -581,49 +634,6 @@ public class JavaApplication1 {
         
     }
 
-    
-    private void basic(){
-        double first_number = 10.5, second_number, third_number, answer;
-        second_number = 20.8;
-        third_number = 2.7;
-        answer = first_number + second_number;
-        // TODO code application logic here
-        System.out.println( "My First Project" );
-        System.out.println( "First number = " + first_number );
-        System.out.println("Addition Total = " + answer );
-        
-        answer = first_number - (second_number + third_number);
-        System.out.println("Total = " + answer );
-        
-        String first_name = "William";
-        String family_name = "Shakespeare";
-        System.out.println( first_name + " " + family_name );
-        
-        Scanner user_input = new Scanner( System.in );
-        
-        System.out.print("Enter your first name: ");
-        first_name = user_input.next( );
-        
-        System.out.print("Enter your family name: ");
-        family_name = user_input.next( );
-        
-        String full_name;
-        full_name = first_name + " " + family_name;
-        System.out.println("You are " + full_name);
-        
-        int[ ] aryNums = { 24, 6, 47, 35, 2, 14 };
-
-        int i;
-        int arrayTotal = 0;
-        int average = 0;
-
-        for (i=0; i < aryNums.length; i++) {
-            arrayTotal = arrayTotal + aryNums[ i ];
-        }
-
-        average = arrayTotal / aryNums.length;
-        System.out.println("total: " + average);
-    }
 
     static class MyOperator<String> implements UnaryOperator<String> {
         private String varc1;
@@ -636,5 +646,19 @@ public class JavaApplication1 {
         public String apply(String s) {
             return varc1;
         }
+    }
+
+    public static class MyComparator implements Comparator<MyData> {
+        @Override
+        public int compare(MyData o1, MyData o2) {
+            if (o1.getDateTime() > o2.getDateTime()) {
+                return -1;
+            } else if (o1.getDateTime() < o2.getDateTime()) {
+                return 1;
+            }
+            return 0;
+        }
+
+
     }
 }

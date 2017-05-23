@@ -5,6 +5,11 @@
  */
 package javaapplication1;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  *
  * @author han
@@ -20,6 +25,7 @@ class MyData {
     private PowerPhase phase1;
     private PowerPhase phase2;
     private PowerPhase phase3;
+    private String timeString;
 
     public MyData() {
     }
@@ -94,5 +100,17 @@ class MyData {
     public void setPhase3(PowerPhase phase3) {
         this.phase3 = phase3;
     }
-    
+
+    public void setTimeString(long timeLong) {
+        Date date = new Date(timeLong);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        String time = sdf.format(date);
+        this.timeString = time;
+
+    }
+
+    public String getTimeString() {
+        return timeString;
+    }
 }
