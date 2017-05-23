@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="334a987f-db0f-4525-b093-c938a50fd3fa" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" afterPath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,8 +30,8 @@
               <caret line="105" column="32" lean-forward="true" selection-start-line="105" selection-start-column="32" selection-end-line="105" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#27782#27783#0" expanded="true" />
-                <element signature="e#27818#27819#0" expanded="true" />
+                <element signature="e#27767#27768#0" expanded="true" />
+                <element signature="e#27803#27804#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -423,7 +422,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495539382400</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add example how to use replace function in List.">
+      <created>1495539466135</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1495539466135</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -521,6 +527,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <MESSAGE value="Create ConvertToJodaTime()" />
     <MESSAGE value="Add example how to use replace function in List." />
     <option name="LAST_COMMIT_MESSAGE" value="Add example how to use replace function in List." />
@@ -656,8 +663,8 @@
           <caret line="207" column="24" lean-forward="false" selection-start-line="207" selection-start-column="24" selection-end-line="207" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -668,8 +675,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -716,8 +723,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -764,8 +771,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -812,8 +819,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -860,8 +867,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -900,8 +907,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -941,8 +948,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1136,8 +1143,8 @@
           <caret line="105" column="32" lean-forward="true" selection-start-line="105" selection-start-column="32" selection-end-line="105" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#27782#27783#0" expanded="true" />
-            <element signature="e#27818#27819#0" expanded="true" />
+            <element signature="e#27767#27768#0" expanded="true" />
+            <element signature="e#27803#27804#0" expanded="true" />
           </folding>
         </state>
       </provider>
