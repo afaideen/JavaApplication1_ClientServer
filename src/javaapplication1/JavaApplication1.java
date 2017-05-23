@@ -151,8 +151,8 @@ public class JavaApplication1 {
                         lastweekDateEnd[0] = FindDateLastWeekEndDay(dateToday);
                         dateTimeTodayStartIndex = 0;
                     }
-//                    ProcessDataWeekly(listData);
-                    ProcessDataMonthly(listData);
+                    ProcessDataWeekly(listData);
+//                    ProcessDataMonthly(listData);
 
                     indexHopCounter++;//next week
                 }
