@@ -109,6 +109,7 @@ public class JavaApplication1 {
         System.out.println(color_list);
 
         // Replace all colors with White color
+        UnaryOperator<String> operator2 = pn->modifyName(pn);
         color_list.replaceAll(operator);
         System.out.println("Color list, after replacing all colors with White color :");
         System.out.println(color_list);
@@ -226,6 +227,11 @@ public class JavaApplication1 {
         }
         
         
+    }
+
+    private static String modifyName(String pn) {
+        pn = pn.concat(" test here");
+        return pn;
     }
 
     private static MyEnergy monthlyEnergy = new MyEnergy();
@@ -607,11 +613,16 @@ public class JavaApplication1 {
         System.out.println("total: " + average);
     }
 
-    static class MyOperator<T> implements UnaryOperator<T> {
-        T varc1;
-        public T apply(T varc){
+    static class MyOperator<String> implements UnaryOperator<String> {
+        private String varc1;
+//        T varc1;
+//        public T apply(T varc){
+//            return varc1;
+//        }
+
+        @Override
+        public String apply(String s) {
             return varc1;
         }
-
     }
 }
