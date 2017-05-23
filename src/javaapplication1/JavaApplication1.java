@@ -205,51 +205,6 @@ public class JavaApplication1 {
         
     }
 
-    private static MyEnergy monthlyEnergy = new MyEnergy();
-    private static List<MyEnergy> listMonthlyEnergy = new ArrayList<>();
-    private static EnergyInfo[] monthInfo = new EnergyInfo[12];
-    private static void ProcessDataMonthly(List<MyData> listData) {
-        int month = 0;
-        for (int i = 0; i < 12; i++) {
-            if(monthInfo[i]==null)
-                monthInfo[i] = new EnergyInfo();
-        }
-        for(MyData data:listData){
-            long datetime = data.getDateTime()*1000;
-            Date date = new Date(datetime);
-            DateTime jodaDate = helper.ConvertToJodaTime(date);
-            month = jodaDate.getMonthOfYear();
-            SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-            String timeString = sdf.format(date);
-
-            CalculateEnergy(data);
-            if(monthlyEnergy.getMonth() != month){
-                listMonthlyEnergy.clear();
-            }
-            monthlyEnergy.setMonth(month);
-            monthlyEnergy.setSensorid(data.getSensorId());
-            monthlyEnergy.set_id(data.getId());
-            monthlyEnergy.setType(data.getType());
-            monthlyEnergy.setEnergy1(energyActive1);
-            monthlyEnergy.setEnergy1Total(totalEnergyActive1);
-            monthlyEnergy.setEnergy2(energyActive2);
-            monthlyEnergy.setEnergy2Total(totalEnergyActive2);
-            monthlyEnergy.setEnergy3(energyActive3);
-            monthlyEnergy.setEnergy3Total(totalEnergyActive3);
-
-            monthlyEnergy.setEnergyTotal(totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3);
-            monthlyEnergy.setDatetime(datetime);
-            monthlyEnergy.setDate(date);
-            monthlyEnergy.setTimeString(timeString);
-            listMonthlyEnergy.add(monthlyEnergy);
-
-            monthInfo[month].setlistMonthlyEnergy(listMonthlyEnergy);
-
-        }
-
-    }
-
     private static void ProcessDataWeekly(List<MyData> listData) {
         for(MyData data:listData){
 
