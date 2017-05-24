@@ -28,8 +28,8 @@
       <file leaf-file-name="JavaApplication1.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="190" column="38" lean-forward="true" selection-start-line="190" selection-start-column="38" selection-end-line="190" selection-end-column="38" />
+            <state relative-caret-position="370">
+              <caret line="202" column="17" lean-forward="true" selection-start-line="202" selection-start-column="17" selection-end-line="202" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#18649#18718#0" expanded="false" />
@@ -479,7 +479,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495614897765</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="A new way">
+      <created>1495615046181</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1495615046181</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1063,8 +1070,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="190" column="38" lean-forward="true" selection-start-line="190" selection-start-column="38" selection-end-line="190" selection-end-column="38" />
+        <state relative-caret-position="370">
+          <caret line="202" column="17" lean-forward="true" selection-start-line="202" selection-start-column="17" selection-end-line="202" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#18649#18718#0" expanded="false" />
