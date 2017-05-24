@@ -21,14 +21,12 @@ import java.util.logging.Logger;
  * @author han
  */
 public class Helper {
-    public static double TarifCalculation(MyEnergy energy){
+    public static double TarifCalculation(double totalEnergy){
         
         double totalCost = 0;
         double balanceEnergy = 0;
-        double totalEnergy = 0;
-
-        totalEnergy = energy.getEnergy1Total() + energy.getEnergy2Total() + energy.getEnergy3Total();
-    
+//        double totalEnergy = 0;
+//        totalEnergy = energy.getEnergy1Total() + energy.getEnergy2Total() + energy.getEnergy3Total();
     
         if(totalEnergy >= 200){
 

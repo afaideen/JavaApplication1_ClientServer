@@ -102,7 +102,7 @@ class MyData {
     }
 
     public void setTimeString(long timeLong) {
-        Date date = new Date(timeLong);
+        Date date = new Date(timeLong*1000);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String time = sdf.format(date);

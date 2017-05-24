@@ -227,7 +227,6 @@ public class MyEnergy implements Cloneable {
 
             return jsonObject.toString();
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return "";
         }
