@@ -79,6 +79,7 @@ public class JavaApplication1 {
     private static Helper helper = new Helper();
     private static List<MyData> listTotalData;
     private static int previousMonth, currentMonth;
+    private static List<MyEnergy>[] listMonthEnergy;
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
@@ -146,13 +147,14 @@ public class JavaApplication1 {
                 weekEnergyAggregate = new double[52];
 //                energy = new MyEnergy();
                 listTotalData = new ArrayList<MyData>();
-                List<MyEnergy>[] listMonthEnergy = new List[12];
+                listMonthEnergy = new List[12];
 
                 while(indexHopCounter >= 0){
 //                while(indexHopCounter < 2){
-//                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
+                    sensorList[indexCounter] = "TM11019026";
+                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
-                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
+//                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
                     System.out.println(urlAddress);
                     URL url = new URL(urlAddress);
 
@@ -181,6 +183,7 @@ public class JavaApplication1 {
                         dateTimeTodayStartIndex = 0;
                     }
                     System.out.println("Start extracting...");
+                    listData = new ArrayList<>();
                     listData = Extract2(jsonArrayData);
 
                     System.out.println("list data size = " + listData.size());
@@ -188,25 +191,21 @@ public class JavaApplication1 {
                         indexHopCounter++;
                         continue;
                     }
+
                     listTotalData.addAll(listData);
                     conn.disconnect();
                     indexHopCounter++;//next week
                 }
-                System.out.println("listTotalData: " + listTotalData.size());
+                System.out.println("listTotalData before duplication removal is " + listTotalData.size());
                 Collections.sort(listTotalData, new MyComparator());
                 //check, if there is duplicate timestamp
-                System.out.println("Checking duplication...");
+                System.out.println("Checking duplication. Removing...");
                 RemoveDuplication(listTotalData);//data with duplicated timestamp will be removed
-//                int index = 0;
-//                for (MyData myData : listTotalData) {
-//                    index = listTotalData.indexOf(myData);
-//                    if(index != 0) {
-//                        if(myData.getDateTime() == listTotalData.get(index-1).getDateTime()){
-//                            System.out.println(" index " + index + " duplicated");
-//
-//                        }
-//                    }
-//                }
+                System.out.println("listTotalData size now after duplication removal is " + listTotalData.size());
+                //check if there is still duplicate timestamp
+                Collections.sort(listTotalData, new MyComparator());
+                Validation(listTotalData);
+
                 //Array List must be always intialized
                 for (int i = 0; i < 12; i++) {
                     if(listMonthEnergy[i]==null)
@@ -245,19 +244,6 @@ public class JavaApplication1 {
 
                     listMonthEnergy[currentMonth-1].add(energy);
                 }
-                //check is there duplicate time
-
-//                for (int i = 2; i < 5; i++) {
-//                    for (MyEnergy energy : listMonthEnergy[i]) {
-//                        index = listMonthEnergy[i].indexOf(energy);
-//                        if(index != 0) {
-//                            if(energy.getDatetime() == listMonthEnergy[i].get(index-1).getDatetime()){
-//                                System.out.println("Month " + (i+1) + " index " + index + " duplicated");
-//
-//                            }
-//                        }
-//                    }
-//                }
 
                 MyEnergy energyCurrentMonth = listMonthEnergy[currentMonth-1].get(listMonthEnergy[currentMonth-1].size()-1);
                 MyEnergy energyLastMonth = new MyEnergy();
@@ -275,7 +261,7 @@ public class JavaApplication1 {
                 double lastMonthEnergyUsage = energyLastMonth.getEnergyTotal() - energyPreviousLastMonth.getEnergyTotal();
                 float totHoursLastMonth = (float) ((listMonthEnergy[currentMonth-1-1].size() * 10.0 / 60.0) / 60.0);//in hours
                 costLastMonth = TarifCalculation(lastMonthEnergyUsage);
-                costAverageLastMonth = costLastMonth/totHoursCurrentMonth;
+                costAverageLastMonth = costLastMonth/totHoursLastMonth;
                 //Calculate last week usage
                 dateToday = new Date();
                 lastweekDateStart[0] = FindDateLastWeekStartDay(dateToday);
@@ -370,6 +356,20 @@ public class JavaApplication1 {
         
     }
 
+    private static void Validation(List<MyData> listTotalData) {
+        int index = 0, count = 0;
+        for (MyData myData : listTotalData) {
+            index = listTotalData.indexOf(myData);
+            if(index != 0) {
+                if(myData.getDateTime() == listTotalData.get(index-1).getDateTime()){
+                    System.out.println("data with index " + index + " duplicated with previous index, id is " + myData.getId());
+                    count++;
+                }
+            }
+        }
+        System.out.println("Duplication detected: " + count);
+    }
+
     private static void RemoveDuplication(List<MyData> listData) {
         int index = 0, count = 0;
         Iterator<MyData> iter = listData.iterator();
@@ -378,7 +378,7 @@ public class JavaApplication1 {
             index = listData.indexOf(myData);
             if(index != 0) {
                 if(myData.getDateTime() == listData.get(index-1).getDateTime()){
-//                                System.out.println(" index " + index + " duplicated");
+                    System.out.println("data with index " + index + " duplicated with previous index, id is " + myData.getId());
                     iter.remove();
                     count++;
                 }
@@ -591,11 +591,16 @@ public class JavaApplication1 {
                 JSONObject obj = (JSONObject) objArray.get(i);//new JSONObject(jsonData); 
                 data.setDateTime(Long.parseLong(obj.getString("dateTime")));
                 Date date = new Date(data.getDateTime()*1000);
-                if(indexHopCounter > 0)
-                    if (!date.after(lastweekDateStart[indexHopCounter-1]) || !date.before(lastweekDateEnd[indexHopCounter-1])) {
-                        System.out.println(lastweekDateStart[indexHopCounter-1] + " - " + lastweekDateEnd[indexHopCounter-1] + " DataIndex " + i + " has date " + date);
+                if (i == 0) {
+                    System.out.println("At index 0, data has date " + date);
+                }
+                if(indexHopCounter > 0) {
+
+                    if (!date.after(lastweekDateStart[indexHopCounter - 1]) || !date.before(lastweekDateEnd[indexHopCounter - 1])) {
+                        System.out.println(lastweekDateStart[indexHopCounter - 1] + " - " + lastweekDateEnd[indexHopCounter - 1] + " DataIndex " + i + " has date " + date);
 //                        continue;
                     }
+                }
                 data.setId(obj.getString("_id"));
                 data.setCounter(Integer.parseInt(obj.getString("counter")));
 

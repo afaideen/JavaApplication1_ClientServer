@@ -226,7 +226,7 @@ public class MyEnergy implements Cloneable {
             jsonObject.put("todaySampleEndT", todaySampleEndT);
             jsonObject.put("costCurrentMonth", costCurrentMonth);
             jsonObject.put("costAveCurrentMonth", costAveCurrentMonth);
-            jsonObject.put("costCurrentMonth", costLastMonth);
+            jsonObject.put("costLastMonth", costLastMonth);
             jsonObject.put("costAveLastMonth", costAveLastMonth);
 
 //            jsonObject2.put("_id", get_id());

@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="334a987f-db0f-4525-b093-c938a50fd3fa" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/PowerPhase.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/model/EnergyInfo.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/JavaApplication1.class" afterPath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/JavaApplication1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/MyEnergy.class" afterPath="$PROJECT_DIR$/out/production/JavaApplication1_ClientServer/javaapplication1/MyEnergy.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" afterPath="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/javaapplication1/MyEnergy.java" afterPath="$PROJECT_DIR$/src/javaapplication1/MyEnergy.java" />
@@ -28,21 +26,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="JavaApplication1.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="324" column="59" lean-forward="true" selection-start-line="324" selection-start-column="59" selection-end-line="324" selection-end-column="59" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#20602#20671#0" expanded="false" />
-                <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
-                <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Helper.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/javaapplication1/Helper.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -53,28 +36,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyEnergy.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MyEnergy.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/javaapplication1/MyEnergy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="227" column="71" lean-forward="true" selection-start-line="227" selection-start-column="71" selection-end-line="227" selection-end-column="71" />
+            <state relative-caret-position="254">
+              <caret line="226" column="65" lean-forward="true" selection-start-line="226" selection-start-column="65" selection-end-line="226" selection-end-column="65" />
               <folding>
-                <element signature="e#7781#7782#0" expanded="true" />
-                <element signature="e#7837#7838#0" expanded="true" />
-                <element signature="e#7880#7881#0" expanded="true" />
-                <element signature="e#7919#7920#0" expanded="true" />
-                <element signature="e#7989#7990#0" expanded="true" />
-                <element signature="e#8051#8052#0" expanded="true" />
-                <element signature="e#8097#8098#0" expanded="true" />
-                <element signature="e#8139#8140#0" expanded="true" />
-                <element signature="e#8197#8198#0" expanded="true" />
-                <element signature="e#8247#8248#0" expanded="true" />
-                <element signature="e#8287#8288#0" expanded="true" />
-                <element signature="e#8323#8324#0" expanded="true" />
-                <element signature="e#8387#8388#0" expanded="true" />
-                <element signature="e#8443#8444#0" expanded="true" />
-                <element signature="e#8486#8487#0" expanded="true" />
-                <element signature="e#8525#8526#0" expanded="true" />
+                <element signature="e#7778#7779#0" expanded="true" />
+                <element signature="e#7834#7835#0" expanded="true" />
+                <element signature="e#7877#7878#0" expanded="true" />
+                <element signature="e#7916#7917#0" expanded="true" />
+                <element signature="e#7986#7987#0" expanded="true" />
+                <element signature="e#8048#8049#0" expanded="true" />
+                <element signature="e#8094#8095#0" expanded="true" />
+                <element signature="e#8136#8137#0" expanded="true" />
+                <element signature="e#8194#8195#0" expanded="true" />
+                <element signature="e#8244#8245#0" expanded="true" />
+                <element signature="e#8284#8285#0" expanded="true" />
+                <element signature="e#8320#8321#0" expanded="true" />
+                <element signature="e#8384#8385#0" expanded="true" />
+                <element signature="e#8440#8441#0" expanded="true" />
+                <element signature="e#8483#8484#0" expanded="true" />
+                <element signature="e#8522#8523#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -83,13 +66,24 @@
       <file leaf-file-name="MyData.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/javaapplication1/MyData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1449">
-              <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+            <state relative-caret-position="267">
+              <caret line="103" column="16" lean-forward="false" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JavaApplication1.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1022">
+              <caret line="183" column="21" lean-forward="true" selection-start-line="183" selection-start-column="21" selection-end-line="183" selection-end-column="21" />
               <folding>
-                <element signature="e#955#956#0" expanded="true" />
-                <element signature="e#986#987#0" expanded="true" />
-                <element signature="e#2248#2249#0" expanded="true" />
-                <element signature="e#2281#2282#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#20654#20723#0" expanded="false" />
+                <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+                <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+                <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
               </folding>
             </state>
           </provider>
@@ -112,6 +106,9 @@
       <find>tStart</find>
       <find>tEnd</find>
       <find>90ee</find>
+      <find>DataIndex</find>
+      <find>listData</find>
+      <find>costAveLastMonth</find>
     </findStrings>
     <replaceStrings>
       <replace>monthlyEnergy</replace>
@@ -120,6 +117,7 @@
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
+        <option value="han &lt;han@wkingpc&gt;" />
         <option value="han" />
       </list>
     </option>
@@ -143,8 +141,8 @@
         <option value="$PROJECT_DIR$/src/javaapplication1/MyData.java" />
         <option value="$PROJECT_DIR$/lib/json-20151123.jar!/org/json/JSONArray.class" />
         <option value="$PROJECT_DIR$/src/javaapplication1/Helper.java" />
-        <option value="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" />
         <option value="$PROJECT_DIR$/src/javaapplication1/MyEnergy.java" />
+        <option value="$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java" />
       </list>
     </option>
   </component>
@@ -501,7 +499,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495615046181</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Include current and previous monthly billing">
+      <created>1495677503039</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1495677503039</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -537,7 +542,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38015607" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38015607" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -580,57 +585,22 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="A new way" />
-    <option name="LAST_COMMIT_MESSAGE" value="A new way" />
+    <MESSAGE value="Include current and previous monthly billing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Include current and previous monthly billing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>261</line>
-          <properties />
-          <option name="timeStamp" value="70" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>318</line>
-          <properties />
-          <option name="timeStamp" value="74" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>284</line>
-          <properties />
-          <option name="timeStamp" value="76" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>214</line>
-          <properties />
-          <option name="timeStamp" value="88" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>195</line>
-          <properties />
-          <option name="timeStamp" value="99" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java</url>
-          <line>357</line>
-          <properties />
-          <option name="timeStamp" value="105" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="106" />
+      <option name="time" value="119" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="listTotalData" language="JAVA" />
         <watch expression="listData" />
+        <watch expression="energy" />
+        <watch expression="listMonthEnergy" />
       </configuration>
     </watches-manager>
   </component>
@@ -683,9 +653,10 @@
           <caret line="252" column="82" lean-forward="true" selection-start-line="252" selection-start-column="82" selection-end-line="252" selection-end-column="82" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -696,9 +667,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -716,22 +688,22 @@
         <state relative-caret-position="5481">
           <caret line="261" column="0" lean-forward="false" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -742,9 +714,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -762,22 +735,22 @@
         <state relative-caret-position="5481">
           <caret line="261" column="0" lean-forward="false" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -788,9 +761,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -808,22 +782,22 @@
         <state relative-caret-position="4437">
           <caret line="261" column="0" lean-forward="false" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -834,9 +808,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -854,22 +829,22 @@
         <state relative-caret-position="4437">
           <caret line="261" column="0" lean-forward="false" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -880,9 +855,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -892,22 +868,22 @@
         <state relative-caret-position="1938">
           <caret line="114" column="0" lean-forward="true" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -918,9 +894,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -930,22 +907,22 @@
         <state relative-caret-position="315">
           <caret line="15" column="37" lean-forward="false" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -957,9 +934,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
+            <element signature="e#20654#20723#0" expanded="false" />
             <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
@@ -969,22 +947,22 @@
         <state relative-caret-position="5418">
           <caret line="258" column="37" lean-forward="false" selection-start-line="258" selection-start-column="37" selection-end-line="258" selection-end-column="37" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1092,19 +1070,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/javaapplication1/MyData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1449">
-          <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-          <folding>
-            <element signature="e#955#956#0" expanded="true" />
-            <element signature="e#986#987#0" expanded="true" />
-            <element signature="e#2248#2249#0" expanded="true" />
-            <element signature="e#2281#2282#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/json-20151123.jar!/org/json/JSONArray.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="134">
@@ -1127,40 +1092,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
+    <entry file="file://$PROJECT_DIR$/src/javaapplication1/MyData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="324" column="59" lean-forward="true" selection-start-line="324" selection-start-column="59" selection-end-line="324" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#20602#20671#0" expanded="false" />
-            <element signature="method#Extract2#0;class#JavaApplication1#0" expanded="false" />
-            <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="267">
+          <caret line="103" column="16" lean-forward="false" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/javaapplication1/MyEnergy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="227" column="71" lean-forward="true" selection-start-line="227" selection-start-column="71" selection-end-line="227" selection-end-column="71" />
+        <state relative-caret-position="254">
+          <caret line="226" column="65" lean-forward="true" selection-start-line="226" selection-start-column="65" selection-end-line="226" selection-end-column="65" />
           <folding>
-            <element signature="e#7781#7782#0" expanded="true" />
-            <element signature="e#7837#7838#0" expanded="true" />
-            <element signature="e#7880#7881#0" expanded="true" />
-            <element signature="e#7919#7920#0" expanded="true" />
-            <element signature="e#7989#7990#0" expanded="true" />
-            <element signature="e#8051#8052#0" expanded="true" />
-            <element signature="e#8097#8098#0" expanded="true" />
-            <element signature="e#8139#8140#0" expanded="true" />
-            <element signature="e#8197#8198#0" expanded="true" />
-            <element signature="e#8247#8248#0" expanded="true" />
-            <element signature="e#8287#8288#0" expanded="true" />
-            <element signature="e#8323#8324#0" expanded="true" />
-            <element signature="e#8387#8388#0" expanded="true" />
-            <element signature="e#8443#8444#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#7778#7779#0" expanded="true" />
+            <element signature="e#7834#7835#0" expanded="true" />
+            <element signature="e#7877#7878#0" expanded="true" />
+            <element signature="e#7916#7917#0" expanded="true" />
+            <element signature="e#7986#7987#0" expanded="true" />
+            <element signature="e#8048#8049#0" expanded="true" />
+            <element signature="e#8094#8095#0" expanded="true" />
+            <element signature="e#8136#8137#0" expanded="true" />
+            <element signature="e#8194#8195#0" expanded="true" />
+            <element signature="e#8244#8245#0" expanded="true" />
+            <element signature="e#8284#8285#0" expanded="true" />
+            <element signature="e#8320#8321#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8440#8441#0" expanded="true" />
+            <element signature="e#8483#8484#0" expanded="true" />
+            <element signature="e#8522#8523#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javaapplication1/JavaApplication1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1022">
+          <caret line="183" column="21" lean-forward="true" selection-start-line="183" selection-start-column="21" selection-end-line="183" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#20654#20723#0" expanded="false" />
+            <element signature="method#getSensorList#0;class#JavaApplication1#0" expanded="false" />
+            <marker date="1495696784627" expanded="true" signature="9666:11361" ph="..." />
+            <marker date="1495696784627" expanded="false" signature="13368:14322" ph="..." />
           </folding>
         </state>
       </provider>
