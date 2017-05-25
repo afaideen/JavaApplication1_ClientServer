@@ -30,7 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.swing.*;
 import java.util.function.*;
 
 /**
@@ -54,8 +53,8 @@ public class JavaApplication1 {
 //    private static MyEnergy energy;
     private static double currentTotalEnergyActive1 = 0,currentTotalEnergyActive2 = 0,currentTotalEnergyActive3 = 0;
     private static int type;
-    private static double costLastWeek;
-    private static double costAverageWeek;
+    private static double costLastWeek, costCurrentMonth, costLastMonth;
+    private static double costAverageWeek, costAverageCurrentMonth, costAverageLastMonth;
     private static double totalCO2;
     private static double costToday;
     private static double costAverageDaily;
@@ -168,6 +167,7 @@ public class JavaApplication1 {
                     jsonArrayData = ReadData(conn);
                     if(jsonArrayData.equals("[]")){
                         indexHopCounter = -1;
+                        System.out.println("No json data exit...");
                         break;
                     }
                     if(indexHopCounter > 0) {
@@ -182,6 +182,7 @@ public class JavaApplication1 {
                     }
                     System.out.println("Start extracting...");
                     listData = Extract2(jsonArrayData);
+
                     System.out.println("list data size = " + listData.size());
                     if(listData.size()==0){
                         indexHopCounter++;
@@ -191,27 +192,22 @@ public class JavaApplication1 {
                     conn.disconnect();
                     indexHopCounter++;//next week
                 }
-                //check is there duplicate time
-                int index = 0;
-                for (MyData myData : listTotalData) {
-                    index = listTotalData.indexOf(myData);
-                    if(index != 0) {
-                        if(myData.getDateTime() == listTotalData.get(index-1).getDateTime()){
-                            System.out.println(" index " + index + " duplicated");
-                        }
-                    }
-                }
+                System.out.println("listTotalData: " + listTotalData.size());
                 Collections.sort(listTotalData, new MyComparator());
-                for (MyData myData : listTotalData) {
-                    index = listTotalData.indexOf(myData);
-                    if(index != 0) {
-                        if(myData.getDateTime() == listTotalData.get(index-1).getDateTime()){
-                            System.out.println(" index " + index + " duplicated");
-
-                        }
-                    }
-                }
-
+                //check, if there is duplicate timestamp
+                System.out.println("Checking duplication...");
+                RemoveDuplication(listTotalData);//data with duplicated timestamp will be removed
+//                int index = 0;
+//                for (MyData myData : listTotalData) {
+//                    index = listTotalData.indexOf(myData);
+//                    if(index != 0) {
+//                        if(myData.getDateTime() == listTotalData.get(index-1).getDateTime()){
+//                            System.out.println(" index " + index + " duplicated");
+//
+//                        }
+//                    }
+//                }
+                //Array List must be always intialized
                 for (int i = 0; i < 12; i++) {
                     if(listMonthEnergy[i]==null)
                         listMonthEnergy[i] = new ArrayList<MyEnergy>();
@@ -251,25 +247,35 @@ public class JavaApplication1 {
                 }
                 //check is there duplicate time
 
-                for (int i = 2; i < 5; i++) {
-                    for (MyEnergy energy : listMonthEnergy[i]) {
-                        index = listMonthEnergy[i].indexOf(energy);
-                        if(index != 0) {
-                            if(energy.getDatetime() == listMonthEnergy[i].get(index-1).getDatetime()){
-                                System.out.println("Month " + (i+1) + " index " + index + " duplicated");
-
-                            }
-                        }
-                    }
-                }
-
+//                for (int i = 2; i < 5; i++) {
+//                    for (MyEnergy energy : listMonthEnergy[i]) {
+//                        index = listMonthEnergy[i].indexOf(energy);
+//                        if(index != 0) {
+//                            if(energy.getDatetime() == listMonthEnergy[i].get(index-1).getDatetime()){
+//                                System.out.println("Month " + (i+1) + " index " + index + " duplicated");
+//
+//                            }
+//                        }
+//                    }
+//                }
 
                 MyEnergy energyCurrentMonth = listMonthEnergy[currentMonth-1].get(listMonthEnergy[currentMonth-1].size()-1);
-                MyEnergy energyPreviousMonth = new MyEnergy();
+                MyEnergy energyLastMonth = new MyEnergy();
                 if(listMonthEnergy[currentMonth-1-1].size() > 0)
-                    energyPreviousMonth = listMonthEnergy[currentMonth-1-1].get(listMonthEnergy[currentMonth-1-1].size()-1);
+                    energyLastMonth = listMonthEnergy[currentMonth-1-1].get(listMonthEnergy[currentMonth-1-1].size()-1);
+                MyEnergy energyPreviousLastMonth = new MyEnergy();
+                if(listMonthEnergy[currentMonth-1-2].size() > 0)
+                    energyPreviousLastMonth = listMonthEnergy[currentMonth-1-2].get(listMonthEnergy[currentMonth-1-2].size()-1);
                 //Calculate monthly usage
-                double monthlyEnergyUsage = energyCurrentMonth.getEnergyTotal() - energyPreviousMonth.getEnergyTotal();
+                double monthlyEnergyUsage = energyCurrentMonth.getEnergyTotal() - energyLastMonth.getEnergyTotal();
+                float totHoursCurrentMonth = (float) ((listMonthEnergy[currentMonth-1].size() * 10.0 / 60.0) / 60.0);//in hours
+                costCurrentMonth = TarifCalculation(monthlyEnergyUsage);
+                costAverageCurrentMonth = costCurrentMonth/totHoursCurrentMonth;
+                //Calculate last month usage
+                double lastMonthEnergyUsage = energyLastMonth.getEnergyTotal() - energyPreviousLastMonth.getEnergyTotal();
+                float totHoursLastMonth = (float) ((listMonthEnergy[currentMonth-1-1].size() * 10.0 / 60.0) / 60.0);//in hours
+                costLastMonth = TarifCalculation(lastMonthEnergyUsage);
+                costAverageLastMonth = costLastMonth/totHoursCurrentMonth;
                 //Calculate last week usage
                 dateToday = new Date();
                 lastweekDateStart[0] = FindDateLastWeekStartDay(dateToday);
@@ -315,6 +321,10 @@ public class JavaApplication1 {
                 energy.setSensorid(sensorList[indexCounter]);
                 energy.setDatetime(energyCurrentMonth.getDatetime());
                 energy.setCostTotal(totalCost);
+                energy.setCostCurrentMonth(costCurrentMonth);
+                energy.setCostAveCurrentMonth(costAverageCurrentMonth);
+                energy.setCostLastMonth(costLastMonth);
+                energy.setCostAveLastMonth(costAverageLastMonth);
                 energy.setCostLastWeek(costLastWeek);
                 energy.setCostAveWeek(costAverageWeek);
                 energy.setCostToday(costToday);
@@ -358,6 +368,23 @@ public class JavaApplication1 {
         }
         
         
+    }
+
+    private static void RemoveDuplication(List<MyData> listData) {
+        int index = 0, count = 0;
+        Iterator<MyData> iter = listData.iterator();
+        while (iter.hasNext()){
+            MyData myData = iter.next();
+            index = listData.indexOf(myData);
+            if(index != 0) {
+                if(myData.getDateTime() == listData.get(index-1).getDateTime()){
+//                                System.out.println(" index " + index + " duplicated");
+                    iter.remove();
+                    count++;
+                }
+            }
+        }
+        System.out.println("Duplication detected: " + count);
     }
 
     private static MyEnergy SetEnergy(MyData data) {

@@ -24,6 +24,10 @@ public class MyEnergy implements Cloneable {
     private Date date;
     private int type;
     private int month;
+    private double costCurrentMonth;
+    private double costAveCurrentMonth;
+    private double costLastMonth;
+    private double costAveLastMonth;
 
     public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
                         double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
@@ -211,7 +215,7 @@ public class MyEnergy implements Cloneable {
             jsonObject.put("dateTime", getDatetime());
             jsonObject.put("sensorId", getSensorid());
 //            jsonObject.put("todayCarbonDioxide", getTodayCO2());
-            jsonObject.put("carbonDioxide", getCO2());  //total CO2
+            jsonObject.put("carbonDioxide", getCO2());  //total CO2 since install
             jsonObject.put("costToday", getCostToday());
             jsonObject.put("costAverageDaily", getCostAverageDaily());
 //            jsonObject.put("costLast24H", getCostLast24H());
@@ -220,6 +224,10 @@ public class MyEnergy implements Cloneable {
             jsonObject.put("rank", "N/A");
             jsonObject.put("todaySampleStartT", todaySampleStartT);
             jsonObject.put("todaySampleEndT", todaySampleEndT);
+            jsonObject.put("costCurrentMonth", costCurrentMonth);
+            jsonObject.put("costAveCurrentMonth", costAveCurrentMonth);
+            jsonObject.put("costCurrentMonth", costLastMonth);
+            jsonObject.put("costAveLastMonth", costAveLastMonth);
 
 //            jsonObject2.put("_id", get_id());
 //            jsonObject2.put("payload", jsonObject);
@@ -289,5 +297,37 @@ public class MyEnergy implements Cloneable {
 
     public int getMonth() {
         return month;
+    }
+
+    public void setCostCurrentMonth(double costCurrentMonth) {
+        this.costCurrentMonth = costCurrentMonth;
+    }
+
+    public double getCostCurrentMonth() {
+        return costCurrentMonth;
+    }
+
+    public void setCostAveCurrentMonth(double costAveCurrentMonth) {
+        this.costAveCurrentMonth = costAveCurrentMonth;
+    }
+
+    public double getCostAveCurrentMonth() {
+        return costAveCurrentMonth;
+    }
+
+    public void setCostLastMonth(double costLastMonth) {
+        this.costLastMonth = costLastMonth;
+    }
+
+    public double getCostLastMonth() {
+        return costLastMonth;
+    }
+
+    public void setCostAveLastMonth(double costAveLastMonth) {
+        this.costAveLastMonth = costAveLastMonth;
+    }
+
+    public double getCostAveLastMonth() {
+        return costAveLastMonth;
     }
 }
