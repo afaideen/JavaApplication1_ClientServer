@@ -22,6 +22,7 @@ import static javaapplication1.Helper.FindDateLastWeekStartDay;
 import static javaapplication1.Helper.TarifCalculation;
 
 import javaapplication1.model.EnergyInfo;
+import javaapplication1.model.MySensor;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 
@@ -80,6 +81,10 @@ public class JavaApplication1 {
     private static List<MyData> listTotalData;
     private static int previousMonth, currentMonth;
     private static List<MyEnergy>[] listMonthEnergy;
+    private static double costPreviousLastMonth;
+    private static double costAveragePreviousLastMonth;
+    private static double costSaving;
+    private static List<MySensor> listSensor = new ArrayList<>();
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
@@ -151,7 +156,7 @@ public class JavaApplication1 {
 
                 while(indexHopCounter >= 0){
 //                while(indexHopCounter < 2){
-                    sensorList[indexCounter] = "TM11019026";
+//                    sensorList[indexCounter] = "TM11019026";
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
@@ -262,6 +267,12 @@ public class JavaApplication1 {
                 float totHoursLastMonth = (float) ((listMonthEnergy[currentMonth-1-1].size() * 10.0 / 60.0) / 60.0);//in hours
                 costLastMonth = TarifCalculation(lastMonthEnergyUsage);
                 costAverageLastMonth = costLastMonth/totHoursLastMonth;
+                //Calculate previous last month
+                double previousLastMonthEnergyUsage = energyPreviousLastMonth.getEnergyTotal() - listMonthEnergy[currentMonth-1-3].get(listMonthEnergy[currentMonth-1-3].size()-1).getEnergyTotal();
+                float totHours = (float)((listMonthEnergy[currentMonth-1-3].size()*10.0/60.0) / 60.0);//in hours
+                costPreviousLastMonth = TarifCalculation(previousLastMonthEnergyUsage);
+                costAveragePreviousLastMonth = costPreviousLastMonth/totHours;
+                costSaving = costLastMonth - costAveragePreviousLastMonth;
                 //Calculate last week usage
                 dateToday = new Date();
                 lastweekDateStart[0] = FindDateLastWeekStartDay(dateToday);
@@ -306,6 +317,7 @@ public class JavaApplication1 {
                 MyEnergy energy = new MyEnergy();
                 energy.setSensorid(sensorList[indexCounter]);
                 energy.setDatetime(energyCurrentMonth.getDatetime());
+                energy.setCostSaving(costSaving);
                 energy.setCostTotal(totalCost);
                 energy.setCostCurrentMonth(costCurrentMonth);
                 energy.setCostAveCurrentMonth(costAverageCurrentMonth);
@@ -319,6 +331,11 @@ public class JavaApplication1 {
                 energy.setTodaySampleStartT(tStart);
                 energy.setTodaySampleEndT(tEnd);
                 energy.setEnergyTotal(totalEnergy);
+                MySensor mySensor = new MySensor();
+                mySensor.setEnergy(energy);
+                mySensor.setId(energy.getSensorid());
+                listSensor.add(mySensor);
+
                 System.out.println("Sensor: " + sensorList[indexCounter] + " Total Energy: " + totalEnergy);
                 msg = energy.toJSON().toString();
                 System.out.println("data sent: " + msg);
@@ -352,7 +369,9 @@ public class JavaApplication1 {
             }
             indexCounter++; //next sensor
         }
-        
+        if(listSensor.size() > 0){
+            Collections.sort(listSensor, new MyComparatorSaving());
+        }
         
     }
 
@@ -360,10 +379,13 @@ public class JavaApplication1 {
         int index = 0, count = 0;
         for (MyData myData : listTotalData) {
             index = listTotalData.indexOf(myData);
-            if(index != 0) {
+            if(index > 0) {
                 if(myData.getDateTime() == listTotalData.get(index-1).getDateTime()){
                     System.out.println("data with index " + index + " duplicated with previous index, id is " + myData.getId());
                     count++;
+                }
+                else if(myData.getDateTime() < listTotalData.get(index-1).getDateTime()){
+                    System.out.println("Wrong sort");
                 }
             }
         }
@@ -733,5 +755,17 @@ public class JavaApplication1 {
         }
 
 
+    }
+
+    private static class MyComparatorSaving implements Comparator<MySensor>{
+        @Override
+        public int compare(MySensor o1, MySensor o2) {
+            if (o1.getEnergy().getCostSaving() > o2.getEnergy().getCostSaving()) {
+                return -1;
+            } else if (o1.getEnergy().getCostSaving() < o2.getEnergy().getCostSaving()) {
+                return 1;
+            }
+            return 0;
+        }
     }
 }

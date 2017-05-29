@@ -28,6 +28,7 @@ public class MyEnergy implements Cloneable {
     private double costAveCurrentMonth;
     private double costLastMonth;
     private double costAveLastMonth;
+    private double costSaving;
 
     public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
                         double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
@@ -329,5 +330,13 @@ public class MyEnergy implements Cloneable {
 
     public double getCostAveLastMonth() {
         return costAveLastMonth;
+    }
+
+    public void setCostSaving(double costSaving) {
+        this.costSaving = costSaving;
+    }
+
+    public double getCostSaving() {
+        return costSaving;
     }
 }
