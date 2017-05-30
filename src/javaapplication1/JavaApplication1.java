@@ -5,6 +5,14 @@
  */
 package javaapplication1;
 
+import javaapplication1.model.EnergyInfo;
+import javaapplication1.model.MySensor;
+import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,23 +23,11 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javaapplication1.Helper.FindDateLastWeekEndDay;
-import static javaapplication1.Helper.FindDateLastWeekStartDay;
-import static javaapplication1.Helper.TarifCalculation;
 
-import javaapplication1.model.EnergyInfo;
-import javaapplication1.model.MySensor;
-import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.DateTime;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.function.*;
+import static javaapplication1.Helper.*;
 
 /**
  *
@@ -156,7 +152,7 @@ public class JavaApplication1 {
 
                 while(indexHopCounter >= 0){
 //                while(indexHopCounter < 2){
-//                    sensorList[indexCounter] = "TM11019026";
+//                    sensorList[indexCounter] = "TM1101910E";//"TM11019026";
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
@@ -261,17 +257,23 @@ public class JavaApplication1 {
                 double monthlyEnergyUsage = energyCurrentMonth.getEnergyTotal() - energyLastMonth.getEnergyTotal();
                 float totHoursCurrentMonth = (float) ((listMonthEnergy[currentMonth-1].size() * 10.0 / 60.0) / 60.0);//in hours
                 costCurrentMonth = TarifCalculation(monthlyEnergyUsage);
-                costAverageCurrentMonth = costCurrentMonth/totHoursCurrentMonth;
+                if(totHoursCurrentMonth > 0)
+                    costAverageCurrentMonth = costCurrentMonth/totHoursCurrentMonth;
                 //Calculate last month usage
                 double lastMonthEnergyUsage = energyLastMonth.getEnergyTotal() - energyPreviousLastMonth.getEnergyTotal();
                 float totHoursLastMonth = (float) ((listMonthEnergy[currentMonth-1-1].size() * 10.0 / 60.0) / 60.0);//in hours
                 costLastMonth = TarifCalculation(lastMonthEnergyUsage);
-                costAverageLastMonth = costLastMonth/totHoursLastMonth;
+                if(totHoursLastMonth > 0)
+                    costAverageLastMonth = costLastMonth/totHoursLastMonth;
                 //Calculate previous last month
-                double previousLastMonthEnergyUsage = energyPreviousLastMonth.getEnergyTotal() - listMonthEnergy[currentMonth-1-3].get(listMonthEnergy[currentMonth-1-3].size()-1).getEnergyTotal();
+                double previousLastMonthEnergyUsage = 0;
+                if(listMonthEnergy[currentMonth-1-3].size() > 0)
+                    previousLastMonthEnergyUsage = energyPreviousLastMonth.getEnergyTotal() - listMonthEnergy[currentMonth-1-3].get(listMonthEnergy[currentMonth-1-3].size()-1).getEnergyTotal();
+
                 float totHours = (float)((listMonthEnergy[currentMonth-1-3].size()*10.0/60.0) / 60.0);//in hours
                 costPreviousLastMonth = TarifCalculation(previousLastMonthEnergyUsage);
-                costAveragePreviousLastMonth = costPreviousLastMonth/totHours;
+                if(totHours > 0)
+                    costAveragePreviousLastMonth = costPreviousLastMonth/totHours;
                 costSaving = costLastMonth - costAveragePreviousLastMonth;
                 //Calculate last week usage
                 dateToday = new Date();
@@ -372,7 +374,7 @@ public class JavaApplication1 {
         if(listSensor.size() > 0){
             Collections.sort(listSensor, new MyComparatorSaving());
         }
-        
+
     }
 
     private static void Validation(List<MyData> listTotalData) {
@@ -381,7 +383,7 @@ public class JavaApplication1 {
             index = listTotalData.indexOf(myData);
             if(index > 0) {
                 if(myData.getDateTime() == listTotalData.get(index-1).getDateTime()){
-                    System.out.println("data with index " + index + " duplicated with previous index, id is " + myData.getId());
+//                    System.out.println("data with index " + index + " duplicated with previous index, id is " + myData.getId());
                     count++;
                 }
                 else if(myData.getDateTime() < listTotalData.get(index-1).getDateTime()){
@@ -400,7 +402,7 @@ public class JavaApplication1 {
             index = listData.indexOf(myData);
             if(index != 0) {
                 if(myData.getDateTime() == listData.get(index-1).getDateTime()){
-                    System.out.println("data with index " + index + " duplicated with previous index, id is " + myData.getId());
+//                    System.out.println("data with index " + index + " duplicated with previous index, id is " + myData.getId());
                     iter.remove();
                     count++;
                 }
