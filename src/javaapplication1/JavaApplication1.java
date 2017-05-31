@@ -39,7 +39,7 @@ public class JavaApplication1 {
      * @param args the command line arguments
      */
     private static String output;
-    static String jsonData, jsonArrayData;
+    static String jsonData;
     static double totalEnergyActive1 = 0, totalEnergyActive2 = 0, totalEnergyActive3 = 0;
     static double totalCost = 0;
     static double[] totalCostWeek = new double[52];
@@ -71,7 +71,7 @@ public class JavaApplication1 {
     static double energyActive1 = 0;
     static double energyActive2 = 0;
     static double energyActive3 = 0;
-    private static List<MyData> listData;
+
     private static Date startDate;
     private static Helper helper = new Helper();
     private static List<MyData> listTotalData;
@@ -81,6 +81,8 @@ public class JavaApplication1 {
     private static double costAveragePreviousLastMonth;
     private static double costSaving;
     private static List<MySensor> listSensor = new ArrayList<>();
+    private static double usageAverageCurrentMonth;
+    private static double usageAverageLastMonth;
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
@@ -150,9 +152,9 @@ public class JavaApplication1 {
                 listTotalData = new ArrayList<MyData>();
                 listMonthEnergy = new List[12];
 
-                while(indexHopCounter >= 0){
+                while(indexHopCounter >= 0){    //week counter
 //                while(indexHopCounter < 2){
-//                    sensorList[indexCounter] = "TM1101910E";//"TM11019026";
+//                    sensorList[indexCounter] = "TM110190EE";//"TM1101910E";//"TM11019026";
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
@@ -167,7 +169,7 @@ public class JavaApplication1 {
                                                 + conn.getResponseCode());
                         }
                     System.out.println("Read json data...");
-                    jsonArrayData = ReadData(conn);
+                    String jsonArrayData = ReadData(conn);
                     if(jsonArrayData.equals("[]")){
                         indexHopCounter = -1;
                         System.out.println("No json data exit...");
@@ -184,7 +186,7 @@ public class JavaApplication1 {
                         dateTimeTodayStartIndex = 0;
                     }
                     System.out.println("Start extracting...");
-                    listData = new ArrayList<>();
+                    List<MyData> listData = new ArrayList<>();
                     listData = Extract2(jsonArrayData);
 
                     System.out.println("list data size = " + listData.size());
@@ -237,7 +239,7 @@ public class JavaApplication1 {
                     currentMonth = jodaDate.getMonthOfYear();
                     if(currentMonth!=previousMonth) {
                         System.out.println("data index:" + listTotalData.indexOf(data));
-                        System.out.println("date:" + data.getTimeString());
+                        System.out.println("date:" + jodaDate);//data.getTimeString());
                         previousMonth = currentMonth;
                     }
                     MyEnergy energy = new MyEnergy();
@@ -257,14 +259,18 @@ public class JavaApplication1 {
                 double monthlyEnergyUsage = energyCurrentMonth.getEnergyTotal() - energyLastMonth.getEnergyTotal();
                 float totHoursCurrentMonth = (float) ((listMonthEnergy[currentMonth-1].size() * 10.0 / 60.0) / 60.0);//in hours
                 costCurrentMonth = TarifCalculation(monthlyEnergyUsage);
-                if(totHoursCurrentMonth > 0)
-                    costAverageCurrentMonth = costCurrentMonth/totHoursCurrentMonth;
+                if(totHoursCurrentMonth > 0) {
+                    usageAverageCurrentMonth = monthlyEnergyUsage/totHoursCurrentMonth;
+                    costAverageCurrentMonth = costCurrentMonth / totHoursCurrentMonth;
+                }
                 //Calculate last month usage
                 double lastMonthEnergyUsage = energyLastMonth.getEnergyTotal() - energyPreviousLastMonth.getEnergyTotal();
                 float totHoursLastMonth = (float) ((listMonthEnergy[currentMonth-1-1].size() * 10.0 / 60.0) / 60.0);//in hours
                 costLastMonth = TarifCalculation(lastMonthEnergyUsage);
-                if(totHoursLastMonth > 0)
-                    costAverageLastMonth = costLastMonth/totHoursLastMonth;
+                if(totHoursLastMonth > 0) {
+                    usageAverageLastMonth = lastMonthEnergyUsage/totHoursLastMonth;
+                    costAverageLastMonth = costLastMonth / totHoursLastMonth;
+                }
                 //Calculate previous last month
                 double previousLastMonthEnergyUsage = 0;
                 if(listMonthEnergy[currentMonth-1-3].size() > 0)
@@ -322,8 +328,12 @@ public class JavaApplication1 {
                 energy.setCostSaving(costSaving);
                 energy.setCostTotal(totalCost);
                 energy.setCostCurrentMonth(costCurrentMonth);
+                energy.setUsageMonthly(monthlyEnergyUsage);
+                energy.setAverageUsageMonthly(usageAverageCurrentMonth);
                 energy.setCostAveCurrentMonth(costAverageCurrentMonth);
                 energy.setCostLastMonth(costLastMonth);
+                energy.setUsageLastMonth(lastMonthEnergyUsage);
+                energy.setUsageAverageLastMonth(usageAverageLastMonth);
                 energy.setCostAveLastMonth(costAverageLastMonth);
                 energy.setCostLastWeek(costLastWeek);
                 energy.setCostAveWeek(costAverageWeek);
@@ -341,7 +351,6 @@ public class JavaApplication1 {
                 System.out.println("Sensor: " + sensorList[indexCounter] + " Total Energy: " + totalEnergy);
                 msg = energy.toJSON().toString();
                 System.out.println("data sent: " + msg);
-//                msg = "[" + msg + "]";
 
                 //http://stackoverflow.com/questions/21974407/how-to-stream-a-json-object-to-a-httpurlconnection-post-request            
                 URL urlpost = new URL("http://10.44.28.105/dashboard");
@@ -352,14 +361,12 @@ public class JavaApplication1 {
                 httpCon.setRequestProperty( "Content-Type", "application/json" );
                 httpCon.setRequestProperty("charset", "utf-8");
                 httpCon.setFixedLengthStreamingMode(msg.getBytes().length); //this line is a must!
-    //                httpCon.setRequestProperty("Content-Length", "" + Integer.toString(msg.getBytes().length));//Integer.toString(urlpost.getBytes().length));        //something wrong with this line
-                httpCon.setRequestProperty("Accept", "application/json");
+                 httpCon.setRequestProperty("Accept", "application/json");
                 httpCon.setRequestMethod("POST");
                 httpCon.connect(); // Note the connect() here
 
                 // Send POST output. Commented code below also useable
                 DataOutputStream printout = new DataOutputStream(httpCon.getOutputStream());
-    //            printout.writeBytes(URLEncoder.encode(msg,"UTF-8"));
                 printout.writeBytes(msg);
                 printout.flush ();
                 printout.close ();
@@ -373,6 +380,53 @@ public class JavaApplication1 {
         }
         if(listSensor.size() > 0){
             Collections.sort(listSensor, new MyComparatorSaving());
+            for (MySensor sensor : listSensor) {
+                System.out.println("Sensor:" + sensor.getId() + " Saving:" + sensor.getEnergy().getCostSaving());
+
+            }
+            JSONObject jsonObject= new JSONObject();
+            JSONObject jsonSensor[]= new JSONObject[listSensor.size()];
+            JSONObject jsonRank = new JSONObject();
+            MySensor sensor = new MySensor();
+            for (int i = 0; i < listSensor.size(); i++) {
+                sensor = listSensor.get(i);
+                jsonObject= new JSONObject();
+                jsonObject.put("sensorId", sensor.getId());
+                jsonObject.put("saving", sensor.getEnergy().getCostSaving());
+                jsonObject.put("rank", i+1);
+                String labelSensor = "sensor[" + i + "]";
+                jsonSensor[i] = new JSONObject();//create object
+                jsonSensor[i].put(labelSensor, jsonObject);
+            }
+            jsonRank.put("rank", jsonSensor);
+            String msg = jsonRank.toString();
+            System.out.println("data sent: " + msg);
+            try {
+                URL urlpost = new URL("http://10.44.28.105/dashboard");
+                HttpURLConnection httpCon = (HttpURLConnection) urlpost.openConnection();
+                httpCon.setDoOutput(true);
+                httpCon.setDoInput(true);
+                httpCon.setUseCaches(false);
+                httpCon.setRequestProperty( "Content-Type", "application/json" );
+                httpCon.setRequestProperty("charset", "utf-8");
+                httpCon.setFixedLengthStreamingMode(msg.getBytes().length); //this line is a must!
+                httpCon.setRequestProperty("Accept", "application/json");
+                httpCon.setRequestMethod("POST");
+                httpCon.connect(); // Note the connect() here
+
+                // Send POST output. Commented code below also useable
+                DataOutputStream printout = new DataOutputStream(httpCon.getOutputStream());
+                printout.writeBytes(msg);
+                printout.flush ();
+                printout.close ();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
@@ -621,14 +675,14 @@ public class JavaApplication1 {
                 if(indexHopCounter > 0) {
 
                     if (!date.after(lastweekDateStart[indexHopCounter - 1]) || !date.before(lastweekDateEnd[indexHopCounter - 1])) {
-                        System.out.println(lastweekDateStart[indexHopCounter - 1] + " - " + lastweekDateEnd[indexHopCounter - 1] + " DataIndex " + i + " has date " + date);
-//                        continue;
+//                        System.out.println(lastweekDateStart[indexHopCounter - 1] + " - " + lastweekDateEnd[indexHopCounter - 1] + " DataIndex " + i + " has date " + date);
+
                     }
                 }
                 data.setId(obj.getString("_id"));
                 data.setCounter(Integer.parseInt(obj.getString("counter")));
 
-                data.setTimeString(data.getDateTime());
+//                data.setTimeString(data.getDateTime());
                 data.setT(obj.getLong("t"));
                 data.setSensorId(obj.getString("sensorId"));
                 data.setType(Integer.parseInt(obj.getString("type")));

@@ -34,28 +34,31 @@ public class Helper {
             balanceEnergy = totalEnergy - 200;
             if( balanceEnergy >= 100){
                 totalCost = 100 * 0.334 + totalCost;
+                balanceEnergy = balanceEnergy - 100;
             }
             else{
                 totalCost = balanceEnergy * 0.334 + totalCost;
+                return totalCost;
             }
 
-            balanceEnergy = balanceEnergy - 100;
+
             if( balanceEnergy >= 300){
                 totalCost = 300 * 0.516 + totalCost;
+                balanceEnergy = balanceEnergy - 300;
             }
             else{
                 totalCost = balanceEnergy * 0.516 + totalCost;
+                return totalCost;
             }
-
-            balanceEnergy = balanceEnergy - 300;
             if( balanceEnergy >= 300){
                 totalCost = 300 * 0.546 + totalCost;
+                balanceEnergy = balanceEnergy - 300;
             }
             else{
                 totalCost = balanceEnergy * 0.546 + totalCost;
+                return totalCost;
             }
 
-            balanceEnergy = balanceEnergy - 300;
             if( balanceEnergy > 0){
                 totalCost = balanceEnergy * 0.571 + totalCost;
             }
@@ -118,9 +121,6 @@ public class Helper {
     public boolean IsInThisMonth(DateTime dateTime) {
         DateTime now = DateTime.now( zone );
         // Now see if the month and year match.
-        if ( ( dateTime.getMonthOfYear() == now.getMonthOfYear() ) && ( dateTime.getYear() == now.getYear() ) ) {
-            return true;
-        }
-        return false;
+        return (dateTime.getMonthOfYear() == now.getMonthOfYear()) && (dateTime.getYear() == now.getYear());
     }
 }

@@ -29,6 +29,10 @@ public class MyEnergy implements Cloneable {
     private double costLastMonth;
     private double costAveLastMonth;
     private double costSaving;
+    private double usageMonthly;
+    private double averageUsageMonthly;
+    private double usageLastMonth;
+    private double usageAverageLastMonth;
 
     public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
                         double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
@@ -229,6 +233,10 @@ public class MyEnergy implements Cloneable {
             jsonObject.put("costAveCurrentMonth", costAveCurrentMonth);
             jsonObject.put("costLastMonth", costLastMonth);
             jsonObject.put("costAveLastMonth", costAveLastMonth);
+            jsonObject.put("usageMonthly", usageMonthly);
+            jsonObject.put("averageUsageMonthly", averageUsageMonthly);
+            jsonObject.put("usageLastMonth", usageLastMonth);
+            jsonObject.put("usageAverageLastMonth", usageAverageLastMonth);
 
 //            jsonObject2.put("_id", get_id());
 //            jsonObject2.put("payload", jsonObject);
@@ -338,5 +346,37 @@ public class MyEnergy implements Cloneable {
 
     public double getCostSaving() {
         return costSaving;
+    }
+
+    public void setUsageMonthly(double monthlyUsage) {
+        this.usageMonthly = monthlyUsage;
+    }
+
+    public double getUsageMonthly() {
+        return usageMonthly;
+    }
+
+    public void setAverageUsageMonthly(double averageMonthlyUsage) {
+        this.averageUsageMonthly = averageMonthlyUsage;
+    }
+
+    public double getAverageUsageMonthly() {
+        return averageUsageMonthly;
+    }
+
+    public void setUsageLastMonth(double usageLastMonth) {
+        this.usageLastMonth = usageLastMonth;
+    }
+
+    public double getUsageLastMonth() {
+        return usageLastMonth;
+    }
+
+    public void setUsageAverageLastMonth(double usageAverageLastMonth) {
+        this.usageAverageLastMonth = usageAverageLastMonth;
+    }
+
+    public double getUsageAverageLastMonth() {
+        return usageAverageLastMonth;
     }
 }
