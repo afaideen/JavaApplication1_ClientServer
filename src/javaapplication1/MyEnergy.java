@@ -33,6 +33,7 @@ public class MyEnergy implements Cloneable {
     private double averageUsageMonthly;
     private double usageLastMonth;
     private double usageAverageLastMonth;
+    private double usageToday;
 
     public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
                         double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
@@ -222,6 +223,7 @@ public class MyEnergy implements Cloneable {
 //            jsonObject.put("todayCarbonDioxide", getTodayCO2());
             jsonObject.put("carbonDioxide", getCO2());  //total CO2 since install
             jsonObject.put("costToday", getCostToday());
+            jsonObject.put("usageToday", usageToday);
             jsonObject.put("costAverageDaily", getCostAverageDaily());
 //            jsonObject.put("costLast24H", getCostLast24H());
             jsonObject.put("costAverageWeek", getCostAveWeek());
@@ -378,5 +380,13 @@ public class MyEnergy implements Cloneable {
 
     public double getUsageAverageLastMonth() {
         return usageAverageLastMonth;
+    }
+
+    public void setUsageToday(double usageToday) {
+        this.usageToday = usageToday;
+    }
+
+    public double getUsageToday() {
+        return usageToday;
     }
 }

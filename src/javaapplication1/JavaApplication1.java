@@ -83,6 +83,7 @@ public class JavaApplication1 {
     private static List<MySensor> listSensor = new ArrayList<>();
     private static double usageAverageCurrentMonth;
     private static double usageAverageLastMonth;
+    private static double todayEnergyUsage;
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
@@ -154,7 +155,7 @@ public class JavaApplication1 {
 
                 while(indexHopCounter >= 0){    //week counter
 //                while(indexHopCounter < 2){
-//                    sensorList[indexCounter] = "TM110190EE";//"TM1101910E";//"TM11019026";
+//                    sensorList[indexCounter] = "TM11019EB9";//"TM110190EE";//"TM1101910E";//"TM11019026";
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
@@ -171,7 +172,7 @@ public class JavaApplication1 {
                     System.out.println("Read json data...");
                     String jsonArrayData = ReadData(conn);
                     if(jsonArrayData.equals("[]")){
-                        indexHopCounter = -1;
+//                        indexHopCounter = -1;
                         System.out.println("No json data exit...");
                         break;
                     }
@@ -287,7 +288,7 @@ public class JavaApplication1 {
                 lastweekDateEnd[0] = FindDateLastWeekEndDay(dateToday);
                 List<MyEnergy>listLastWeekUsage = new ArrayList<>();
                 List<MyEnergy>listTodayUsage = new ArrayList<>();
-                double totalEnergyPreviousWeek = 0, totalLastEnergyYesterday = 0;
+                double totalEnergyPreviousWeek = 0;//, totalLastEnergyYesterday = 0;
                 tStart = 0;
                 for (MyEnergy energy : listMonthEnergy[currentMonth-1]) {
                     Date date = energy.getDate();
@@ -302,21 +303,29 @@ public class JavaApplication1 {
                             if(tStart == 0)
                                 tStart = energy.getDatetime();
                             listTodayUsage.add(energy);
-                        } else if (listTodayUsage.size() == 0) {
-                            totalLastEnergyYesterday = energy.getEnergyTotal();
                         }
+//                        else if (listTodayUsage.size() == 0) {
+//                            totalLastEnergyYesterday = energy.getEnergyTotal();
+//                        }
                     }
                 }
-                tEnd = listTodayUsage.get(listTodayUsage.size()-1).getDatetime();
-                double lastWeekEnergyUsage = listLastWeekUsage.get(listLastWeekUsage.size()-1).getEnergyTotal() - totalEnergyPreviousWeek;
-                float totHoursLastWeek = (float) ((listLastWeekUsage.size() * 10.0 / 60.0) / 60.0);//in hours
-                costLastWeek = TarifCalculation(lastWeekEnergyUsage);
-                costAverageWeek = costLastWeek/totHoursLastWeek;
+                if(listTodayUsage.size() > 0)
+                    tEnd = listTodayUsage.get(listTodayUsage.size()-1).getDatetime();
+                //Calculate last week
+                if(listLastWeekUsage.size() > 0) {
+                    double lastWeekEnergyUsage = listLastWeekUsage.get(listLastWeekUsage.size() - 1).getEnergyTotal() - totalEnergyPreviousWeek;
+                    float totHoursLastWeek = (float) ((listLastWeekUsage.size() * 10.0 / 60.0) / 60.0);//in hours
+                    costLastWeek = TarifCalculation(lastWeekEnergyUsage);
+                    costAverageWeek = costLastWeek / totHoursLastWeek;
+                }
                 //Calculate today usage
-                double todayEnergyUsage = listTodayUsage.get(listTodayUsage.size()-1).getEnergyTotal() - totalLastEnergyYesterday;
-                float totHoursToday = (float) ((listTodayUsage.size() * 10.0 / 60.0) / 60.0);//in hours
-                costToday= TarifCalculation(todayEnergyUsage);
-                costAverageDaily = costToday/totHoursToday;
+                if(listTodayUsage.size() > 0) {
+                    todayEnergyUsage = listTodayUsage.get(listTodayUsage.size() - 1).getEnergyTotal() - (listTodayUsage.get(0).getEnergyTotal()
+                                            - (listTodayUsage.get(0).getEnergy1()+listTodayUsage.get(0).getEnergy2()+listTodayUsage.get(0).getEnergy3()));//totalLastEnergyYesterday;
+                    float totHoursToday = (float) ((listTodayUsage.size() * 10.0 / 60.0) / 60.0);//in hours
+                    costToday = TarifCalculation(todayEnergyUsage);
+                    costAverageDaily = costToday / totHoursToday;
+                }
                 //Calculate total cost
                 totalCost = TarifCalculation(totalEnergy);
                 totalCO2 = totalEnergy * 0.67552;
@@ -338,6 +347,7 @@ public class JavaApplication1 {
                 energy.setCostLastWeek(costLastWeek);
                 energy.setCostAveWeek(costAverageWeek);
                 energy.setCostToday(costToday);
+                energy.setUsageToday(todayEnergyUsage);
                 energy.setCostAverageDaily(costAverageDaily);
                 energy.setCO2(totalCO2);
                 energy.setTodaySampleStartT(tStart);
