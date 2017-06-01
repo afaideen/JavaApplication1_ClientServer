@@ -155,7 +155,7 @@ public class JavaApplication1 {
 
                 while(indexHopCounter >= 0){    //week counter
 //                while(indexHopCounter < 2){
-                    sensorList[indexCounter] = "TM1101C263";//"TM11019EB9";//"TM110190EE";//"TM1101910E";//"TM11019026";
+//                    sensorList[indexCounter] = "TM1101C263";//"TM11019EB9";//"TM110190EE";//"TM1101910E";//"TM11019026";
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
