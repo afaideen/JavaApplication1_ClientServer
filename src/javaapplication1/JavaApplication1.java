@@ -137,7 +137,7 @@ public class JavaApplication1 {
         sensorList = getSensorList();
         int size = sensorList.length;
         while(indexCounter < sensorList.length){
-           
+//        while(indexCounter < 2){
             try {
 //                URL url = new URL("http://10.44.28.105/sensor_kafkaid?id=TM1101C263&points=8640");  //24hr 
 //                URL url = new URL("http://10.44.28.105/sensor_kafkaid?id=TM1101C263&points=60480");     //7 days, a week
@@ -340,10 +340,15 @@ public class JavaApplication1 {
                 energy.setUsageMonthly(monthlyEnergyUsage);
                 energy.setAverageUsageMonthly(usageAverageCurrentMonth);
                 energy.setCostAveCurrentMonth(costAverageCurrentMonth);
+                //Last month
                 energy.setCostLastMonth(costLastMonth);
                 energy.setUsageLastMonth(lastMonthEnergyUsage);
                 energy.setUsageAverageLastMonth(usageAverageLastMonth);
                 energy.setCostAveLastMonth(costAverageLastMonth);
+                //Previous Last Month
+                energy.setCostPreviousLastMonth(costPreviousLastMonth);
+                energy.setUsagePreviousLastMonth(previousLastMonthEnergyUsage);
+                //Last week
                 energy.setCostLastWeek(costLastWeek);
                 energy.setCostAveWeek(costAverageWeek);
                 energy.setCostToday(costToday);
@@ -404,6 +409,10 @@ public class JavaApplication1 {
                 jsonObject.put("sensorId", sensor.getId());
                 jsonObject.put("saving", sensor.getEnergy().getCostSaving());
                 jsonObject.put("rank", i+1);
+                jsonObject.put("costLastMonth", sensor.getEnergy().getCostLastMonth());
+                jsonObject.put("usageLastMonth", sensor.getEnergy().getUsageLastMonth());
+                jsonObject.put("costPreviousLastMonth", sensor.getEnergy().getCostPreviousLastMonth());
+                jsonObject.put("usagePreviousLastMonth", sensor.getEnergy().getUsagePreviousLastMonth());
                 String labelSensor = "sensor[" + i + "]";
                 jsonSensor[i] = new JSONObject();//create object
                 jsonSensor[i].put(labelSensor, jsonObject);
