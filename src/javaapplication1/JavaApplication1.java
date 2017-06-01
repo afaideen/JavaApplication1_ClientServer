@@ -222,7 +222,7 @@ public class JavaApplication1 {
                 totalEnergyActive2 = 0;
                 totalEnergyActive3 = 0;
                 for (MyData data : listTotalData) {
-                    if(data.getType() == 1){
+                    if(data.getType() == 1 || data.getType() == 2){
                         energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10 / 3600 / 1000;
                         totalEnergyActive1 = totalEnergyActive1 + energyActive1;
                     }
@@ -749,7 +749,7 @@ public class JavaApplication1 {
 
             }
         }catch (JSONException e){
-            System.out.println(e + "dataType: " + data.getType());
+            System.out.println(e + "dataType: " + data.getType() + " sensorid: " + data.getSensorId());
         }
          
         
