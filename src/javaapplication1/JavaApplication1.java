@@ -260,6 +260,8 @@ public class JavaApplication1 {
                 double monthlyEnergyUsage = energyCurrentMonth.getEnergyTotal() - energyLastMonth.getEnergyTotal();
                 float totHoursCurrentMonth = (float) ((listMonthEnergy[currentMonth-1].size() * 10.0 / 60.0) / 60.0)/24;//in days
                 costCurrentMonth = TarifCalculation(monthlyEnergyUsage);
+                usageAverageCurrentMonth = 0;
+                costAverageCurrentMonth = 0;
                 if(totHoursCurrentMonth > 0) {
                     usageAverageCurrentMonth = monthlyEnergyUsage/totHoursCurrentMonth;
                     costAverageCurrentMonth = costCurrentMonth / totHoursCurrentMonth;
@@ -268,6 +270,8 @@ public class JavaApplication1 {
                 double lastMonthEnergyUsage = energyLastMonth.getEnergyTotal() - energyPreviousLastMonth.getEnergyTotal();
                 float totHoursLastMonth = (float) ((listMonthEnergy[currentMonth-1-1].size() * 10.0 / 60.0) / 60.0)/24;//in days
                 costLastMonth = TarifCalculation(lastMonthEnergyUsage);
+                usageAverageLastMonth = 0;
+                costAverageLastMonth = 0;
                 if(totHoursLastMonth > 0) {
                     usageAverageLastMonth = lastMonthEnergyUsage/totHoursLastMonth;
                     costAverageLastMonth = costLastMonth / totHoursLastMonth;
@@ -279,6 +283,7 @@ public class JavaApplication1 {
 
                 float totHours = (float)((listMonthEnergy[currentMonth-1-3].size()*10.0/60.0) / 60.0)/24;//in days
                 costPreviousLastMonth = TarifCalculation(previousLastMonthEnergyUsage);
+                costAveragePreviousLastMonth = 0;
                 if(totHours > 0)
                     costAveragePreviousLastMonth = costPreviousLastMonth/totHours;
                 costSaving = costLastMonth - costPreviousLastMonth;
