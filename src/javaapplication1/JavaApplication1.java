@@ -327,7 +327,7 @@ public class JavaApplication1 {
                 if(listTodayUsage.size() > 0) {
                     todayEnergyUsage = listTodayUsage.get(listTodayUsage.size() - 1).getEnergyTotal() - (listTodayUsage.get(0).getEnergyTotal()
                                             - (listTodayUsage.get(0).getEnergy1()+listTodayUsage.get(0).getEnergy2()+listTodayUsage.get(0).getEnergy3()));//totalLastEnergyYesterday;
-                    float totHoursToday = (float) ((listTodayUsage.size() * 10.0 / 60.0) / 60.0)/24;//in hours
+                    float totHoursToday = (float) ((listTodayUsage.size() * 10.0 / 60.0) / 60.0)/24;//in days
                     costToday = TarifCalculation(todayEnergyUsage);
                     costAverageDaily = costToday / totHoursToday;
                 }
