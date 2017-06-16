@@ -83,7 +83,7 @@ public class JavaApplication1 {
     private static List<MySensor> listSensor = new ArrayList<>();
     private static double usageAverageCurrentMonth;
     private static double usageAverageLastMonth;
-    private static double todayEnergyUsage;
+    private static double todayEnergyUsage, usageAverageDaily;
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
@@ -324,12 +324,18 @@ public class JavaApplication1 {
                     costAverageWeek = costLastWeek / totHoursLastWeek;
                 }
                 //Calculate today usage
+                todayEnergyUsage = 0;
+                costToday = 0;
+                usageAverageDaily = 0;
+                costAverageDaily = 0;
                 if(listTodayUsage.size() > 0) {
                     todayEnergyUsage = listTodayUsage.get(listTodayUsage.size() - 1).getEnergyTotal() - (listTodayUsage.get(0).getEnergyTotal()
                                             - (listTodayUsage.get(0).getEnergy1()+listTodayUsage.get(0).getEnergy2()+listTodayUsage.get(0).getEnergy3()));//totalLastEnergyYesterday;
                     float totHoursToday = (float) ((listTodayUsage.size() * 10.0 / 60.0) / 60.0)/24;//in days
+                    usageAverageDaily = todayEnergyUsage / totHoursToday;
                     costToday = TarifCalculation(todayEnergyUsage);
                     costAverageDaily = costToday / totHoursToday;
+
                 }
                 //Calculate total cost
                 totalCost = TarifCalculation(totalEnergy);
@@ -356,8 +362,10 @@ public class JavaApplication1 {
                 //Last week
                 energy.setCostLastWeek(costLastWeek);
                 energy.setCostAveWeek(costAverageWeek);
+                //Today
                 energy.setCostToday(costToday);
                 energy.setUsageToday(todayEnergyUsage);
+                energy.setUsageAverageDaily(usageAverageDaily);
                 energy.setCostAverageDaily(costAverageDaily);
                 energy.setCO2(totalCO2);
                 energy.setTodaySampleStartT(tStart);
