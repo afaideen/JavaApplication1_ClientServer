@@ -37,6 +37,7 @@ public class MyEnergy implements Cloneable {
     private double costPreviousLastMonth;
     private double usagePreviousLastMonth;
     private double usageAverageDaily;
+    private double energyActiveTotalMonthly;
 
     public MyEnergy(String id, String sensorId, double energyActive1, double totalEnergyActive1,double energyActive2, double totalEnergyActive2,
                         double energyActive3, double totalEnergyActive3, double totalCost, long datetime, String timeString) {
@@ -416,5 +417,13 @@ public class MyEnergy implements Cloneable {
 
     public double getUsageAverageDaily() {
         return usageAverageDaily;
+    }
+
+    public void setEnergyActiveTotalMonthly(double energyActiveTotalMonthly) {
+        this.energyActiveTotalMonthly = energyActiveTotalMonthly;
+    }
+
+    public double getEnergyActiveTotalMonthly() {
+        return energyActiveTotalMonthly;
     }
 }

@@ -41,6 +41,7 @@ public class JavaApplication1 {
     private static String output;
     static String jsonData;
     static double totalEnergyActive1 = 0, totalEnergyActive2 = 0, totalEnergyActive3 = 0;
+    static double totalEnergyActive1Monthly = 0, totalEnergyActive2Monthly = 0, totalEnergyActive3Monthly = 0;
     static double totalCost = 0;
     static double[] totalCostWeek = new double[52];
     static int indexarray = 0;
@@ -65,12 +66,15 @@ public class JavaApplication1 {
     private static int weekdataLastValidIndex;
     private static int todaydataLastValidIndex;
     private static double totHours;
-    private static double totalEnergy;
+    private static double totalEnergyActive, totalEnergyActiveMonthly;
     private static double[] weekEnergy, weekEnergyAggregate;
     private static List<MyEnergy> listEnergy;
     static double energyActive1 = 0;
     static double energyActive2 = 0;
     static double energyActive3 = 0;
+    static double energyActive1Monthly = 0;
+    static double energyActive2Monthly = 0;
+    static double energyActive3Monthly = 0;
 
     private static Date startDate;
     private static Helper helper = new Helper();
@@ -87,7 +91,7 @@ public class JavaApplication1 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
-        startDate = helper.SetDate("1/05/2017 00:00:00");//dd/MM/yyyy HH:mm:ss
+        /*startDate = helper.SetDate("1/05/2017 00:00:00");//dd/MM/yyyy HH:mm:ss
         DateTime dateTime = helper.ConvertToJodaTime(startDate);
 
         if(helper.IsInThisMonth(dateTime)){
@@ -132,7 +136,7 @@ public class JavaApplication1 {
         UnaryOperator<String> operator2 = pn->modifyName(pn);
         color_list.replaceAll(operator);
         System.out.println("Color list, after replacing all colors with White color :");
-        System.out.println(color_list);
+        System.out.println(color_list);*/
 
         sensorList = getSensorList();
         int size = sensorList.length;
@@ -143,7 +147,7 @@ public class JavaApplication1 {
 //                URL url = new URL("http://10.44.28.105/sensor_kafkaid?id=TM1101C263&points=60480");     //7 days, a week
 //                urlAddress = "http://10.44.28.105/sensor_kafkaid?id=" + sensorList[indexCounter++] + "&points=60480";
                 indexHopCounter = 0;
-                totalEnergy = 0;
+                totalEnergyActive = 0;
                 currentTotalEnergyActive1 = 0;
                 currentTotalEnergyActive2 = 0;
                 currentTotalEnergyActive3 = 0;
@@ -155,7 +159,7 @@ public class JavaApplication1 {
 
                 while(indexHopCounter >= 0){    //week counter
 //                while(indexHopCounter < 2){
-//                    sensorList[indexCounter] = "TM1101C263";//"TM11019EB9";//"TM110190EE";//"TM1101910E";//"TM11019026";
+//                    sensorList[indexCounter] = "TM11019026";//"TM1101C263";//"TM11019EB9";//"TM110190EE";//"TM1101910E";//"TM11019026";
                     urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + sensorList[indexCounter] + "&hops=" + indexHopCounter; // last week version
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM1101910E" + "&hops=" + indexHopCounter;
 //                    urlAddress = "http://10.44.28.105/sensor_data_by_week?sensor_id=" + "TM11019026" + "&hops=" + indexHopCounter;
@@ -200,6 +204,12 @@ public class JavaApplication1 {
                     conn.disconnect();
                     indexHopCounter++;//next week
                 }
+                if(listTotalData.size() == 0) {
+                    System.out.println("listTotalData size is " + listTotalData.size());
+                    System.out.println("Next sensor increment.");
+                    indexCounter++;//next sensor
+                    continue;
+                }
                 System.out.println("listTotalData before duplication removal is " + listTotalData.size());
                 Collections.sort(listTotalData, new MyComparator());
                 //check, if there is duplicate timestamp
@@ -222,27 +232,28 @@ public class JavaApplication1 {
                 totalEnergyActive2 = 0;
                 totalEnergyActive3 = 0;
                 for (MyData data : listTotalData) {
-                    if(data.getType() == 1 || data.getType() == 2){
-                        energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10 / 3600 / 1000;
-                        totalEnergyActive1 = totalEnergyActive1 + energyActive1;
-                    }
-                    else {
-                        energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10 / 3600 / 1000;
-                        totalEnergyActive1 = totalEnergyActive1 + energyActive1;
-                        energyActive2 = Math.abs(Double.parseDouble(data.getPhase2().getActivepower())) * 10 / 3600 / 1000;
-                        totalEnergyActive2 = totalEnergyActive2 + energyActive2;
-                        energyActive3 = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10 / 3600 / 1000;
-                        totalEnergyActive3 = totalEnergyActive2 + energyActive3;
-                    }
-                    totalEnergy = totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3;
-
                     DateTime jodaDate = helper.ConvertToJodaTime(new Date(data.getDateTime()*1000));
                     currentMonth = jodaDate.getMonthOfYear();
                     if(currentMonth!=previousMonth) {
                         System.out.println("data index:" + listTotalData.indexOf(data));
                         System.out.println("date:" + jodaDate);//data.getTimeString());
+
+                        energyActive1Monthly = 0;
+                        energyActive2Monthly = 0;
+                        energyActive3Monthly = 0;
+                        totalEnergyActive1Monthly = 0;
+                        totalEnergyActive2Monthly = 0;
+                        totalEnergyActive3Monthly = 0;
+                        totalEnergyActiveMonthly = 0;
                         previousMonth = currentMonth;
                     }
+                    if(listMonthEnergy[currentMonth-1].size() > 0){
+                        //Calculate cost monthly and store in array
+                        int index = listMonthEnergy[currentMonth-1].size()-1;
+                        double billMonthly = TarifCalculation(listMonthEnergy[currentMonth-1].get(index).getEnergyActiveTotalMonthly());
+                        listMonthEnergy[currentMonth-1].get(0).setCostCurrentMonth(billMonthly);
+                    }
+
                     MyEnergy energy = new MyEnergy();
                     energy = SetEnergy(data);
 
@@ -289,12 +300,15 @@ public class JavaApplication1 {
                 costSaving = costLastMonth - costPreviousLastMonth;
                 //Calculate last week usage
                 dateToday = new Date();
+                DateTime jodaDate = helper.ConvertToJodaTime(dateToday);
+                currentMonth = jodaDate.getMonthOfYear();
                 lastweekDateStart[0] = FindDateLastWeekStartDay(dateToday);
                 lastweekDateEnd[0] = FindDateLastWeekEndDay(dateToday);
                 List<MyEnergy>listLastWeekUsage = new ArrayList<>();
                 List<MyEnergy>listTodayUsage = new ArrayList<>();
                 double totalEnergyPreviousWeek = 0;//, totalLastEnergyYesterday = 0;
                 tStart = 0;
+                tEnd = 0;
                 for (MyEnergy energy : listMonthEnergy[currentMonth-1]) {
                     Date date = energy.getDate();
                     if(date.after(lastweekDateStart[0]) && date.before(lastweekDateEnd[0])){
@@ -314,8 +328,7 @@ public class JavaApplication1 {
 //                        }
                     }
                 }
-                if(listTodayUsage.size() > 0)
-                    tEnd = listTodayUsage.get(listTodayUsage.size()-1).getDatetime();
+
                 //Calculate last week
                 if(listLastWeekUsage.size() > 0) {
                     double lastWeekEnergyUsage = listLastWeekUsage.get(listLastWeekUsage.size() - 1).getEnergyTotal() - totalEnergyPreviousWeek;
@@ -329,6 +342,7 @@ public class JavaApplication1 {
                 usageAverageDaily = 0;
                 costAverageDaily = 0;
                 if(listTodayUsage.size() > 0) {
+                    tEnd = listTodayUsage.get(listTodayUsage.size()-1).getDatetime();
                     todayEnergyUsage = listTodayUsage.get(listTodayUsage.size() - 1).getEnergyTotal() - (listTodayUsage.get(0).getEnergyTotal()
                                             - (listTodayUsage.get(0).getEnergy1()+listTodayUsage.get(0).getEnergy2()+listTodayUsage.get(0).getEnergy3()));//totalLastEnergyYesterday;
                     float totHoursToday = (float) ((listTodayUsage.size() * 10.0 / 60.0) / 60.0)/24;//in days
@@ -338,8 +352,8 @@ public class JavaApplication1 {
 
                 }
                 //Calculate total cost
-                totalCost = TarifCalculation(totalEnergy);
-                totalCO2 = totalEnergy * 0.67552;
+                totalCost = TarifCalculation(totalEnergyActive);
+                totalCO2 = totalEnergyActive * 0.67552;
 
                 String msg = "";
                 MyEnergy energy = new MyEnergy();
@@ -347,6 +361,7 @@ public class JavaApplication1 {
                 energy.setDatetime(energyCurrentMonth.getDatetime());
                 energy.setCostSaving(costSaving);
                 energy.setCostTotal(totalCost);
+                //Current Month (upto present time)
                 energy.setCostCurrentMonth(costCurrentMonth);
                 energy.setUsageMonthly(monthlyEnergyUsage);
                 energy.setAverageUsageMonthly(usageAverageCurrentMonth);
@@ -370,13 +385,13 @@ public class JavaApplication1 {
                 energy.setCO2(totalCO2);
                 energy.setTodaySampleStartT(tStart);
                 energy.setTodaySampleEndT(tEnd);
-                energy.setEnergyTotal(totalEnergy);
+                energy.setEnergyTotal(totalEnergyActive);
                 MySensor mySensor = new MySensor();
                 mySensor.setEnergy(energy);
                 mySensor.setId(energy.getSensorid());
                 listSensor.add(mySensor);
 
-                System.out.println("Sensor: " + sensorList[indexCounter] + " Total Energy: " + totalEnergy);
+                System.out.println("Sensor: " + sensorList[indexCounter] + " Total Energy: " + totalEnergyActive);
                 msg = energy.toJSON().toString();
                 System.out.println("data sent: " + msg);
 
@@ -498,6 +513,27 @@ public class JavaApplication1 {
     }
 
     private static MyEnergy SetEnergy(MyData data) {
+        energyActive1 = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10 / 3600 / 1000;
+        totalEnergyActive1 = totalEnergyActive1 + energyActive1;
+        if(data.getType() == 3) {
+            energyActive2 = Math.abs(Double.parseDouble(data.getPhase2().getActivepower())) * 10 / 3600 / 1000;
+            totalEnergyActive2 = totalEnergyActive2 + energyActive2;
+            energyActive3 = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10 / 3600 / 1000;
+            totalEnergyActive3 = totalEnergyActive2 + energyActive3;
+        }
+        totalEnergyActive = totalEnergyActive1 + totalEnergyActive2 + totalEnergyActive3;
+
+        //Monthly calculation
+        energyActive1Monthly = Math.abs(Double.parseDouble(data.getPhase1().getActivepower())) * 10 / 3600 / 1000;
+        totalEnergyActive1Monthly = totalEnergyActive1Monthly + energyActive1Monthly;
+        if(data.getType() == 3) {
+            energyActive2Monthly = Math.abs(Double.parseDouble(data.getPhase2().getActivepower())) * 10 / 3600 / 1000;
+            totalEnergyActive2Monthly = totalEnergyActive2Monthly + energyActive2Monthly;
+            energyActive3Monthly = Math.abs(Double.parseDouble(data.getPhase3().getActivepower())) * 10 / 3600 / 1000;
+            totalEnergyActive3Monthly = totalEnergyActive2Monthly + energyActive3Monthly;
+        }
+        totalEnergyActiveMonthly = totalEnergyActive1Monthly + totalEnergyActive2Monthly + totalEnergyActive3Monthly;
+
         MyEnergy energy = new MyEnergy();
         energy.setSensorid(data.getSensorId());
         energy.set_id(data.getId());
@@ -512,7 +548,8 @@ public class JavaApplication1 {
         energy.setEnergy2Total(totalEnergyActive2);
         energy.setEnergy3(energyActive3);
         energy.setEnergy3Total(totalEnergyActive3);
-        energy.setEnergyTotal(totalEnergy);
+        energy.setEnergyTotal(totalEnergyActive);
+        energy.setEnergyActiveTotalMonthly(totalEnergyActiveMonthly);
         return energy;
     }
 
@@ -522,7 +559,7 @@ public class JavaApplication1 {
     }
 
     private static MyEnergy monthlyEnergy = new MyEnergy();
-    private static List<MyEnergy> listMonthlyEnergy = new ArrayList<>();
+//    private static List<MyEnergy> listMonthlyEnergy = new ArrayList<>();
     private static EnergyInfo[] monthInfo = new EnergyInfo[12];
 //    private static void ProcessDataMonthly(List<MyData> listData) {
 //        int month = 0;
@@ -631,11 +668,11 @@ public class JavaApplication1 {
         currentTotalEnergyActive1 = currentTotalEnergyActive1 + energy.getEnergy1Total();
         currentTotalEnergyActive2 = currentTotalEnergyActive2 + energy.getEnergy2Total();
         currentTotalEnergyActive3 = currentTotalEnergyActive3 + energy.getEnergy3Total();
-        totalEnergy = currentTotalEnergyActive1 + currentTotalEnergyActive2 + currentTotalEnergyActive3;
-        System.out.println("listEnergy size: " + listEnergy.size() + " total energy: " + totalEnergy );
-        totalCostWeek[indexHopCounter] = TarifCalculation(totalEnergy);
+        totalEnergyActive = currentTotalEnergyActive1 + currentTotalEnergyActive2 + currentTotalEnergyActive3;
+        System.out.println("listEnergy size: " + listEnergy.size() + " total energy: " + totalEnergyActive);
+        totalCostWeek[indexHopCounter] = TarifCalculation(totalEnergyActive);
         totalCost += totalCostWeek[indexHopCounter];
-        totalCO2 = totalEnergy * 0.67552;
+        totalCO2 = totalEnergyActive * 0.67552;
 
         if(indexHopCounter == 0){
             costToday = totalCostWeek[0];//energy.getCostToday();
